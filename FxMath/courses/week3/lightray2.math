@@ -1,0 +1,103 @@
+\begin{document}
+\title{Light Ray - Reflection}
+
+\section{Calculate reflection}
+
+
+
+\begin{script}
+P = new point("P",0,0);
+alpha = -1.0;
+salpha = new slider("α",alpha,[0,-PI/2],[70,30],200,EAST);
+
+l = new vector("r_i", cos(alpha),sin(alpha));
+L = new point("L", -2*cos(alpha),-2*sin(alpha));
+l.setBasePoint(L);
+l.setStyleName("lightVector");
+
+ri = new vector("r_i", cos(alpha),sin(alpha));
+ri.setStyleName("lightVector");
+
+n = new vector("n",0,1);
+n.setStyleName("zAxis");
+
+r = new vector("r_o",cos(alpha),-sin(alpha));
+s = new segment("",L,P);
+s.setStyleName("projection");
+
+surface = new rect([-1,0],[2,-0.1]);
+surface.setStyleName("boxOrange");
+N = new point("N",0,1);
+
+angle = new angle("α",N,P,L);
+angle.setLabelDirection(0,50);
+
+R = P+r;
+
+angle2 = new angle("α",R,P,N);
+angle2.setLabelDirection(0,50);
+
+d = dot(n,ri);
+Proj = P + d*n;
+
+m = new measurement("",Proj,P);
+m.setLabel("{$d} = {&d}");
+
+
+rip = d*n;
+rip.setCaption("r_ip");
+rip.setLabel("{$rip} = {&rip$(d)}");
+rip.setStyleName("zAxis2");
+ro = ri - 2*d*n;
+ro.setCaption("r_o");
+ro.setStyleName("lightVector");
+
+rnip = -d*n;
+rnip.setBasePoint(ri);
+rnip.setStyleName("zAxis2");
+rnip.setCaption("r_nip");
+
+\end{script}
+
+Calculating the reflection of a vector is a \green{basic} technique that
+ every game developer should know and understand.\\
+
+
+
+\begin{picture}
+\width{640}
+\extents{-2,-2,2,2}
+\begin{part}
+\begin{text}
+As a first step we place the incident lightvector {$l} at P. (vectors have
+ no position so we can place them anywhere as long as we keep the same direction.
+\end{text}
+\include{P,salpha,L,l,n,s,surface,angle,ri}
+\end{part}
+
+\begin{part}
+\begin{text}
+The next step is to calculate the projection {$d} of {$ri} on the normal {$n} with 
+the dot product.
+\end{text}
+\include{Proj,m}
+\end{part}
+
+\begin{part}
+\begin{text}
+{$d} is a scalar value (a float) and we can use this value to create a new 
+vector that we call {$rip}. Notice that this vector points downwards.
+\end{text}
+\include{rip}
+\end{part}
+
+\begin{part}
+\begin{text}
+Finally, we can flip the {$rip} vector to point in the other direction, so
+ the reflected ray becomes: {$ro}={&ro$(d)}
+\end{text}
+\include{ro,angle2,rnip}
+\end{part}
+
+\end{picture}
+\end{document}

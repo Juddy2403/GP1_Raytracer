@@ -1,0 +1,54 @@
+\begin{document}
+\title{What is a ray ?}
+\section{What is a ray ?}
+
+\begin{script}
+time = new doubleanimator(1.0);
+a =new axis3d();
+cam2 =new camera([-1.552,8.74,4.448] , [1.057,2.597,1.176] );
+
+T = new point3d("T",1.0,1.0,0.5);
+
+r = new vector3d("r_d", 1.0,1.0,0.5);
+rn = normalize(r);
+rn.setCaption("r_N");
+rn.setBasePoint(T);
+rn.setStyleName("xAxis");
+s = 2.0;
+sSlider = new slider("s",s, [1.0,5.0], [100.0,30.0], 300.0, EAST);
+
+R = T + s*rn;
+R.setStyleName("point");
+seg1 = new vsegment3d("",T,R);
+
+
+\end{script}
+
+\begin{picture3d}
+\dimension{1200,640}
+\extents{-2,-2,7,7}
+\scale{55.11,55.11}
+\begin{text}
+We start with the definition of a ray. A ray has an \b{origin} and a \b{direction}.
+For the intersection method to work, it is important that the \green{magnitude} of the ray vector is \green{1}, in other
+ words this should be a \green{unit} vector.
+\end{text}
+\include{cam2,T,rn,a,time}
+
+\begin{part}
+\begin{text}
+The \b{first} question we solve is to define the \b{set} of all points R that are on the ray. We need to introduce a free parameter {$s} and the following formula defines a point R that is on the ray:\\
+
+{$R} = {&R$(rn)} \\
+{$R} = {&R#(s)$(rn)} \\
+
+\b{Note:} {$T} and {$rn} are \b{known}.
+\end{text}
+\include{R,sSlider,seg1}
+\end{part}
+
+
+\end{picture3d}
+
+
+\end{document}

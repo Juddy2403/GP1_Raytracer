@@ -1,0 +1,72 @@
+\begin{document}
+\title{Transformation Matrix - Orthonormal basis}
+\section{Transformation Matrix}
+\subsection{Orthonormal basis}
+\begin{script}
+cf3 = new cellformat("boxLab2",[0,0],[2,2]);
+cam = new camera([5,5,5],[0,0,0]);
+nf=new decimalformat("#.##");
+v1=new vector3d("a",1,0,0);
+v1.setStyleName("xAxis");
+v2=new vector3d("b",0,1,0);
+v2.setStyleName("yAxis");
+v3=new vector3d("c",0,0,1);
+v3.setStyleName("zAxis");
+T=new point3d("T",0,0,0);
+mm= new matrix44("M_1",T,v1,v2,v3);
+
+l1 = length(v1);
+l2 = length(v2);
+l3 = length(v3);
+d1 = dot(v1,v2);
+d2 = dot(v2,v3);
+d3 = dot(v3,v1);
+
+m3 = new matrix33("M_T",v1,v2,v3);
+\end{script}
+
+We take a fresh look at the transformation matrix with the basis vectors {$v1}, {$v2} and {$v3}: \\
+
+{$mm} = {&mm' >>cf3&(ccs)} \\
+
+These basis vectors are stored in the first three rows and columns of the matrix as highlighted in
+ the matrix above. \\
+
+We can call {$mm} an orthonormal basis if the following \b{six} conditions apply:
+
+\begin{enumerate}{▹}
+\item {&l1} = {#l1}
+\item {&l2} = {#l2}
+\item {&l3} = {#l3}
+\item {$v1} ⊥ {$v2} or {&d1} = {#d1}
+\item {$v2} ⊥ {$v3} or {&d2} = {#d2}
+\item {$v3} ⊥ {$v1} or {&d3} = {#d3}
+\end{enumerate}
+
+The translation {$T} can be any value.
+
+\begin{rightcolumn}
+\subsection{Properties}
+When transforming with an orthonormal basis the following properties apply:
+
+\begin{enumerate}{*}
+\item An orthonormal transformation \b{preserves} the \red{angles} of transformed objects (no skewing).
+\item An orthonormal transformation \b{preserves} the \red{distances} of transformed objects (no scaling).
+\end{enumerate}
+
+\subsection{Questions}
+\begin{p}{boxStyle=boxBlue}
+\begin{enumerate}{1}
+\item Reformulate the multiplication of two orthonormal bases as the transformation of three vectors and
+ a point of the second matrix with the first matrix.
+\item What is the result of the product of two orthonormal bases? Is it again an orthonormal
+ base or not? Explain!
+\item If we switch the rows and columns of the three first rows and columns of an orthonormal
+ basis do we still have an orthonormal base? The first three rows and columns would look
+ like this: {&m3 &(ccs)}\\Explain your reasoning.
+\end{enumerate}
+\end{p}
+\end{rightcolumn}
+
+
+\end{document}

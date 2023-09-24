@@ -1,0 +1,33 @@
+\begin{document}
+\title{Transformation Matrix - Scale of vector}
+\chapter{Transformation Matrix - Scale of vector}
+\begin{script}
+nf=new decimalformat("#.##");
+v1=new vector3d("a",2,0,0);
+v1.setStyleName("xAxis");
+v2=new vector3d("b",0,3,0);
+v2.setStyleName("yAxis");
+v3=new vector3d("c",0,0,10);
+v3.setStyleName("zAxis");
+T=new point3d("T",2,8,9);
+mm= new matrix44("M_1",T,v1,v2,v3);
+
+u = new vector3d("u",4,5,7);
+um = new matrix41(u);
+u2 = new vector3d("u'",8,15,70);
+um2 = new matrix41(u2);
+\end{script}
+
+\section{Vector translation}
+
+The vector {&u} is defined as {#u} \\ \\
+
+We need to convert this 1x3 vector again to a \green{1x4} vector. For vectors
+ we set this fourth value to 0. \\ \\
+
+{&u2} = {&um' &(ccs)} . {&mm' } \\ \\ {&u2} = {#um' } . {#mm' }  = {#um2' } \\ \\
+
+\begin{p}{boxStyle=boxRed}Because the fourth coordinate of the vector is set to \bold{zero},only the
+ scale is applied to the transformed vector {$u2}.
+\end{p}
+\end{document}

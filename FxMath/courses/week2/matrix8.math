@@ -1,0 +1,50 @@
+\begin{document}
+\title{Transformation Matrix - Pitch Rotation}
+\section{Transformation Matrix}
+\subsection{Pitch Rotation}
+The final rotation is the pitch-rotation which is a rotation around
+ the side to side axis, in the case of a camera this is the horizontal axis of the camera:\\ \\
+
+\begin{script}
+cam = new camera([9.621,5.767,5.782] , [-1.883,-3.695,-6.348] );
+nf=new decimalformat("#.##");
+af =new angleformat("#.##°");
+pitch=1.2;
+pitch.setCaption("γ");
+pitchs = new slider("{$pitch}={#pitch}",pitch,[0,2*PI],[100,20],300,EAST);
+pitchs.setLabel("{$pitch} = {#pitch>>af}");
+pca = cos(pitch);
+psa = sin(pitch);
+v1=new vector3d("e_x",1,0,0);
+v1.setLabel("{$v1} = {#v1'>>nf }");
+v1.setStyleName("xAxis");
+v2=new vector3d("e_y",0,pca,-psa);
+v2.setLabel("{$v2} = {#v2'>>nf }");
+v2.setStyleName("yAxis");
+v3=new vector3d("e_z",0,psa,pca);
+v3.setLabel("{$v3} = {#v3'>>nf}");
+v3.setStyleName("zAxis");
+T=new point3d("T",3,0,0);
+mm= new matrix44("M_1",T,v1,v2,v3);
+
+p1 = new point3d("P_1",1.5,2,1);
+pm = new matrix41(p1);
+
+p2 = mm*p1;
+p2.setCaption("P_2");
+a = new axis3d();
+
+
+\end{script}
+
+{$mm} = {&mm' }\\ \\ {$mm} = {#mm' >>nf} \\ \\
+{$p2}= {&p2' } = {&p2' #(p1)} = {#p2>>nf}
+
+\begin{rightcolumn}
+\subsection{Visualization}
+\begin{picture3d}
+\dimension{720,720}
+\include{mm,cam,pitchs,p1,p2,a}
+\end{picture3d}
+\end{rightcolumn}
+\end{document}

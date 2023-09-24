@@ -1,0 +1,75 @@
+\begin{document}
+\title{Camera ONB - Pitch Yaw camera}
+\chapter{Camera ONB}
+With the knowledge that we can use an orthonormal basis to position and rotate
+ the camera in the world, we can now also control the camera.
+
+\begin{p}{boxStyle=xCell}
+\b{Important Note:} In general it is a good idea to completely recreate matrices from
+ the given angles. \\
+Two reasons: 
+\begin{enumerate}{1}
+\item This method gives you a more robust camera.
+\item Floating point accuracy can suffer when multiplying lots of matrices together.
+\end{enumerate}
+
+\end{p}
+
+\begin{script}
+cam = new camera([9.621,5.767,5.782] , [-1.883,-3.695,-6.348],[0,1,0] );
+nf=new decimalformat("#.##");
+af =new angleformat("#.##°");
+yaw=1.2;
+yaw.setCaption("γ");
+yaws = new slider("{$yaw}={#yaw}",yaw,[0,2*PI],[100,20],300,EAST);
+yaws.setLabel("{$yaw} = {#yaw>>af}");
+ca = cos(yaw);
+sa = sin(yaw);
+v1=new vector3d("e_x",cos(yaw),0,-sa);
+v1.setLabel("{$v1} = {#v1'>>nf }");
+v1.setStyleName("xAxis");
+v2=new vector3d("e_y",0,1,0);
+v2.setLabel("{$v2} = {#v2'>>nf }");
+v2.setStyleName("yAxis");
+v3=new vector3d("e_z",sa,0,cos(yaw));
+v3.setLabel("{$v3} = {#v3'>>nf}");
+v3.setStyleName("zAxis");
+T1=new point3d("T",0,0,0);
+my= new matrix44("M_Y",T1,v1,v2,v3);
+
+pitch=1.2;
+pitch.setCaption("α");
+pitchs = new slider("{$pitch}={#pitch}",pitch,[0,2*PI],[100,60],300,EAST);
+pitchs.setLabel("{$pitch} = {#pitch>>af}");
+pca = cos(pitch);
+psa = sin(pitch);
+pv1=new vector3d("e_x",1,0,0);
+pv1.setLabel("{$v1} = {#v1'>>nf }");
+pv1.setStyleName("xAxis");
+pv2=new vector3d("e_y",0,pca,-psa);
+pv2.setLabel("{$v2} = {#v2'>>nf }");
+pv2.setStyleName("yAxis");
+pv3=new vector3d("e_z",0,psa,pca);
+pv3.setLabel("{$v3} = {#v3'>>nf}");
+pv3.setStyleName("zAxis");
+T2=new point3d("T",0,0,0);
+mp= new matrix44("M_1",T2,pv1,pv2,pv3);
+
+a = new axis3d();
+
+mc = my*mp;
+mc.setCaption("M_C");
+\end{script}
+
+{$mc}={&mc' } \\ \\
+{#mc}
+
+\begin{rightcolumn}
+\subsection{Visualization}
+\begin{picture3d}
+\dimension{720,720}
+\include{mc,cam,yaws,pitchs,a}
+\end{picture3d}
+\end{rightcolumn}
+
+\end{document}

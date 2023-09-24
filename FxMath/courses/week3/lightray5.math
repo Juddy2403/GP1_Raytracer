@@ -1,0 +1,179 @@
+\begin{document}
+\title{Specular reflection}
+\chapter{Specular reflection}
+
+Specular reflection follows the law of reflection, which states that on a perfectly planar surface the angle of reflection is equal to the angle of incidence.
+\begin{script}
+r = new rect([1,2],[8,2]);
+r.setStyleName("boxLab2");
+lp = new point("",2,6);
+sp = new point("P",5,4);
+sp.setCaptionDirection(SOUTH,10);
+l = (sp-lp);
+ln = l / length(l);
+ln.setStyleName("lightVector");
+ln.setCaption("l_n");
+s = new segment(lp,sp,"projection");
+rl1 = new vector(2*cos(.2),2*sin(.2),"lightVector",sp);
+rl2 = new vector(2*cos(.35),2*sin(.35),"lightVector",sp);
+rl3 = new vector(2*cos(.47),2*sin(.47),"lightVector",sp);
+
+sp1 = new point(5.5,3.5);
+sa1 = new circle([5.5,3.5],.1,"boxLab");
+
+rl4 = sp1-sp;
+rl4.setStyleName("yAxis");
+rl4.setCaption("");
+
+sp2 = new point(6,3.4);
+sa2 = new circle([6,3.4],.1,"boxLab");
+
+rl5 = sp2-sp;
+rl5.setStyleName("yAxis");
+rl5.setCaption("");
+
+sp3 = new point(5.5,2.75);
+sa3 = new circle([5.5,2.75],.1,"boxLab");
+rl6 = sp3-sp;
+rl6.setStyleName("yAxis");
+rl6.setCaption("");
+
+
+sp4 = new point(5.5,2.2);
+sa4 = new circle([5.5,2.2],.1,"boxLab");
+sp5 = new point(6,2.7);
+sa5 = new circle([6,2.7],.1,"boxLab");
+sp6 = new point(5.75,3.1);
+sa6 = new circle([5.75,3.1],.1,"boxLab");
+
+sp7 = new point(6.5,2.7);
+sa7 = new circle([6.5,2.7],.1,"boxLab");
+sp8 = new point(7.2,2.9);
+sa8 = new circle([7.2,2.9],.1,"boxLab");
+sp9 = new point(6.75,3.4);
+sa9 = new circle([6.75,3.4],.1,"boxLab");
+
+
+ss1 =new vector(sp3,sp5,"projection");
+ss2 =new vector(sp3,sp4,"projection");
+ss3 = new vector(sp3,sp4,"projection");
+ss4 = new vector(sp6,sp7,"projection");
+ss5 = new vector(sp1,sp6,"projection");
+ss6 = new vector(sp2,sp8,"projection");
+ss7 = new vector(sp2,sp9,"projection");
+
+sc1 = new vector(sp4,[4,6],"xAxis" );
+sc2 = new vector(sp5,[7,6],"xAxis" );
+sc3 = new vector(sp6,[6.5,5.5],"xAxis" );
+sc4 = new vector(sp7,[5.5,5.5],"xAxis" );
+sc5 = new vector(sp8,[7.5,4.5],"xAxis" );
+sc6 = new vector(sp9,[7.5,5.5],"xAxis" );
+
+sc7 = new vector(sp3,[3.5,5.5],"xAxis" );
+
+\end{script}
+\begin{p}{align=center}
+\includegraphics{images/specular.jpg}
+\end{p}
+\begin{picture}
+\width{640}
+\extents{0,2,8,6.5}
+\begin{part}
+\begin{text}
+Smoother surfaces will keep specular reflections focused, and they will appear to look brighter or more intense when viewed from the proper angle.
+\end{text}
+\include{r,ln,lp,sp,s,sa1,sa2,sa3,sa4,sa5,sa6,sa7,sa8,sa9}
+\include{rl1,rl2,rl3}
+
+\end{part}
+\end{picture}
+\begin{rightcolumn}
+Most surfaces are irregular, and the reflected direction will vary randomly based on the surface roughness. This changes light direction, but the light intensity remains constant.
+\begin{script}
+r = new rect([1,2],[8,2]);
+r.setStyleName("boxLab2");
+lp = new point("",2,6);
+sp = new point("P",5,4);
+sp.setCaptionDirection(SOUTH,10);
+l = (sp-lp);
+ln = l / length(l);
+ln.setStyleName("lightVector");
+ln.setCaption("l_n");
+s = new segment(lp,sp,"projection");
+rl1 = new vector(2*cos(.2),2*sin(.2),"lightVector",sp);
+rl2 = new vector(2*cos(.6),2*sin(.6),"lightVector",sp);
+rl3 = new vector(2*cos(1),2*sin(1),"lightVector",sp);
+
+sp1 = new point(5.5,3.5);
+sa1 = new circle([5.5,3.5],.1,"boxLab");
+
+rl4 = sp1-sp;
+rl4.setStyleName("yAxis");
+rl4.setCaption("");
+
+sp2 = new point(6,3.4);
+sa2 = new circle([6,3.4],.1,"boxLab");
+
+rl5 = sp2-sp;
+rl5.setStyleName("yAxis");
+rl5.setCaption("");
+
+sp3 = new point(5.5,2.75);
+sa3 = new circle([5.5,2.75],.1,"boxLab");
+rl6 = sp3-sp;
+rl6.setStyleName("yAxis");
+rl6.setCaption("");
+
+
+sp4 = new point(5.5,2.2);
+sa4 = new circle([5.5,2.2],.1,"boxLab");
+sp5 = new point(6,2.7);
+sa5 = new circle([6,2.7],.1,"boxLab");
+sp6 = new point(5.75,3.1);
+sa6 = new circle([5.75,3.1],.1,"boxLab");
+
+sp7 = new point(6.5,2.7);
+sa7 = new circle([6.5,2.7],.1,"boxLab");
+sp8 = new point(7.2,2.9);
+sa8 = new circle([7.2,2.9],.1,"boxLab");
+sp9 = new point(6.75,3.4);
+sa9 = new circle([6.75,3.4],.1,"boxLab");
+
+
+ss1 =new vector(sp3,sp5,"projection");
+ss2 =new vector(sp3,sp4,"projection");
+ss3 = new vector(sp3,sp4,"projection");
+ss4 = new vector(sp6,sp7,"projection");
+ss5 = new vector(sp1,sp6,"projection");
+ss6 = new vector(sp2,sp8,"projection");
+ss7 = new vector(sp2,sp9,"projection");
+
+sc1 = new vector(sp4,[4,6],"xAxis" );
+sc2 = new vector(sp5,[7,6],"xAxis" );
+sc3 = new vector(sp6,[6.5,5.5],"xAxis" );
+sc4 = new vector(sp7,[5.5,5.5],"xAxis" );
+sc5 = new vector(sp8,[7.5,4.5],"xAxis" );
+sc6 = new vector(sp9,[7.5,5.5],"xAxis" );
+
+sc7 = new vector(sp3,[3.5,5.5],"xAxis" );
+
+\end{script}
+\begin{p}{align=center}
+\includegraphics{images/diffuse.jpg}
+\end{p}
+\begin{picture}
+\width{640}
+\extents{0,2,8,6.5}
+\begin{part}
+\begin{text}
+Rougher surfaces will have highlights that are larger, and that appear dimmer ⇒ diffuse. 
+However, the same total amount of light is reflected in both cases.
+\end{text}
+\include{r,ln,lp,sp,s,sa1,sa2,sa3,sa4,sa5,sa6,sa7,sa8,sa9}
+\include{rl1,rl2,rl3,rl4,rl5,rl6}
+
+\end{part}
+\end{picture}
+\end{rightcolumn}
+
+\end{document}

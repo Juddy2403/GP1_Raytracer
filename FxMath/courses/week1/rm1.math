@@ -1,0 +1,93 @@
+\begin{document}
+\title{Ray class}
+\section{Ray class}
+
+\begin{listing}{width=800,title=raytracer_math/Ray.h}
+\begin{code}
+#pragma once
+#include "Vector3.h"
+#include "Sphere.h"
+namespace DAE {
+	class Ray
+	{
+	public:
+		Ray(Vector3 origin, Vector3 direction);
+		const Vector3& GetOrigin()const;
+		const Vector3& GetDirection()const;
+
+		float Intersect(const Sphere& sphere)const;
+		Vector3 GetRayPoint(const float t) const;
+
+	private:
+		Vector3 m_Origin;
+		Vector3 m_Direction;
+	};
+}
+\end{code}
+
+\begin{part}
+\begin{text}
+The \type{Ray} class stores the origin of the ray and the direction of the ray. This class also
+ calculates if a ray intersects with a sphere, and where it intersects.
+\end{text}
+\include{1-3}
+\end{part}
+
+\begin{part}
+\begin{text}
+We again put the class in the \string{DAE} namespace and give it the name \type{Ray}
+\end{text}
+\include{4-6,18,19}
+\end{part}
+
+\begin{part}
+\begin{text}
+The \type{Ray} class has two data members:
+\begin{enumerate}
+\item \parameter{m_Origin}: a \green{point} that describes the start of the ray.
+\item \parameter{m_Direction}: a \green{vector} that describes the direction of the ray.
+\end{enumerate}
+\end{text}
+\include{15-17}
+\end{part}
+
+\begin{part}
+\begin{text}
+The \type{Ray} class has two member functions that return the datamembers \parameter{m_Origin} and
+ \parameter{m_Direction}:
+\begin{enumerate}
+\item \function{GetOrigin}: this member returns the start \green{point} of the \type{Ray}.
+\item \function{GetDirection}: this member returns the direction \green{vector} o fthe \type{Ray}.
+\end{enumerate}
+\end{text}
+\include{7,9-10}
+\end{part}
+
+
+\begin{part}
+\begin{text}
+The constructor creates a new \type{Ray} object with the given origin which is a \green{point} and
+ a direction which is a \green{vector}. The direction vector will be \red{normalized} within this
+ constructor.
+\end{text}
+\include{8}
+\end{part}
+
+\begin{part}
+\begin{text}
+The \function{Intersect} member function calculates the \red{first} intersection of this \type{Ray}
+ object with the \type{Sphere} object. This function returns the \parameter{t} value which is 
+the \green{distance} of the intersection point to the origin point of the \type{Ray}.
+\end{text}
+\include{12}
+\end{part}
+
+\begin{part}
+\begin{text}
+The \function{GetRayPoint} member function calculates a point along the ray, given the \parameter{t} value.
+\end{text}
+\include{13}
+\end{part}
+
+\end{listing}
+\end{document}

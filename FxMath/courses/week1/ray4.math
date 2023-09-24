@@ -1,0 +1,141 @@
+\begin{document}
+\title{Ray sphere intersection 2D}
+\section{Ray sphere intersection 2D}
+\begin{script}
+CC = new point("C",4,3);
+r = 1.5;
+C = new circle("C", CC, r);
+T = new point("T",0.5,1);
+rv = new vector("r_N",1.0,1.0);
+rn = normalize(rv);
+rn.setCaption("r_N");
+rn.setBasePoint(T);
+rn.setStyleName("xAxis");
+
+Inf = T + 20*rn;
+s1 = new segment("",T,Inf);
+s1.setStyleName("projection");
+
+tc = CC-T;
+tc.setCaption("t_c");
+tc.setStyleName("yAxis");
+
+tcl = length(tc);
+
+dp = dot(tc,rn);
+P = T+dp*rn;
+P.setCaption("P");
+
+
+
+m1 = new measurement(T,P);
+m1.setLabel("{$dp} = {$tc} \bold{.} {$rn}");
+m1.setDistance(1.0);
+m2 = new measurement(T,CC);
+m2.setLabel("{$tcl}={&tcl$(tc)}");
+m2.setDistance(-1.0);
+
+od = sqrt(tcl^2 - dp^2);
+
+od2a = tcl^2 - dp^2;
+od2b = od^2;
+m3 = new measurement("",P,CC);
+m3.setLabel("{$od}");
+
+t = new triangle(T,CC,P);
+
+tca = sqrt(r^2-od^2);
+t0 = dp -tca;
+I1 = T+ t0*rn;
+I1.setCaption("I_1");
+
+t2 = new triangle(I1,P,CC);
+
+m4 = new measurement(I1,CC);
+m4.setLabel("{$r}");
+m4.setDistance(-0.5);
+
+m5 = new measurement(I1,P);
+m5.setLabel("{$tca}");
+
+m6 = new measurement(T,I1);
+m6.setLabel("{$t0} = {&t0$(tca,dp)}");
+
+debug(od2b,t0,dp,tc);
+
+\end{script}
+
+\begin{picture}
+\width{640}
+\extents{-1,-1,6,6}
+\begin{part}
+\begin{text}We start with a ray with origin {$T} and direction {$rn}. We want to find
+ out its intersection with the circle with center {$CC} and radius {$r}.\end{text}
+\include{C,T,rn,s1}
+\end{part}
+
+\begin{part}
+\begin{text}
+The first step is to create a vector from {$T} to {$CC}, we call this vector {$tc} and 
+ this vector is calculated as: {$tc} = {&tc$(CC,T)}
+\end{text}
+\include{tc}
+\end{part}
+
+\begin{part}
+\begin{text}The next step is to create a right triangle with points {$P}, {$T} and {$CC}. The point
+ {$P} is the perpendicular projection of point {$CC} on the ray.\end{text}
+\include{P,t}
+\end{part}
+
+\begin{part}
+\begin{text}
+We can now calculate the sides of this right triangle. The side from {$T} to {$P} can be calculated
+ with the dot product:\\ {$dp} = {&dp$(tc,rn)} 
+\end{text}
+\include{m1,m2}
+\end{part}
+
+\begin{part}
+\begin{text}
+The other side {$od} can then be calculated with a simple application of the pythagorean
+ formula: \\{&od2b$(od)} = {&od2a$(dp,tcl)}
+\end{text}
+\include{m3}
+\end{part}
+
+\begin{part}
+\begin{text}With {$od} calculated, we can now consider another \green{right} triangle with
+ points {$I1},{$CC} and {$P}, where {$I1} is the intersection point that we want to
+ calculate.
+\end{text}
+\include{I1,t2}
+\exclude{m2,t,tc}
+\end{part}
+
+\begin{part}
+\begin{text}
+The side between the points {$I1} and {$CC} is the \green{radius} of the circle.
+\end{text}
+\include{m4}
+\end{part}
+
+\begin{part}
+\begin{text}The other side {$tca} is then again found by applying the pythagorean formula:
+{$tca} = {&tca$(r,od)}
+\end{text}
+\include{m5}
+\end{part}
+
+\begin{part}
+\begin{text}
+Finally, the distance from point {$T} to {$I1} along the ray is: \\ {$t0} = {&t0$(tca,dp)}\\
+The point {$I1} can then be found by considering that this {$t0} is a multiplication
+ factor for the ray {$rn} : \\ {$I1} = {&I1$(T,rn,t0)}
+\end{text}
+\include{m6}
+\end{part}
+
+\end{picture}
+
+\end{document}

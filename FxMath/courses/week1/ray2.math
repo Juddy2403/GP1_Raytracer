@@ -1,0 +1,41 @@
+\begin{document}
+\title{What is a sphere ?}
+\section{What is a sphere ?}
+
+\begin{script}
+a =new axis3d();
+cam2 =new camera([-12.544,11.384,7.801] , [-7.431,6.646,5.219] );
+SC = new point3d("C",1,1,2);
+radius = 1.0;
+r = new slider("r",radius,[0.5,5],[10,60],200,EAST);
+s1 = new sphere3d("s1",SC,r);
+s1.setSphereStyleName("yellowCell");
+\end{script}
+
+\begin{picture3d}
+\dimension{1200,640}
+
+\begin{part}
+\begin{text}
+A \green{sphere} has a center which is a point.
+\end{text}
+\include{SC,cam2,a}
+\end{part}
+
+\begin{part}
+\begin{text}
+The sphere itself is then a \green{collection} of points that are at the same distance from
+ the center of the sphere. This distance is called the \green{radius} of the sphere.
+\end{text}
+\include{s1}
+\end{part}
+
+\begin{part}
+\begin{text}
+The \green{radius} and the \green{center} of the sphere together define the 
+\end{text}
+\include{r}
+\end{part}
+
+\end{picture3d}
+\end{document}
