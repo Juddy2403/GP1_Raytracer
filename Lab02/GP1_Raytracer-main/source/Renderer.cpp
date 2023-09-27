@@ -32,7 +32,6 @@ void Renderer::Render(Scene* pScene) const
 	{
 		for (int py{}; py < m_Height; ++py)
 		{
-			
 			Vector3 rayDirection{};
 			float cx{}, cy{}, aspectRatio{ static_cast<float>(m_Width) / static_cast<float> (m_Height) };
 			cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio;
@@ -45,16 +44,8 @@ void Renderer::Render(Scene* pScene) const
 			HitRecord closestHit{};
 			pScene->GetClosestHit(hitRay, closestHit);
 
-			//Sphere testSphere{ {0.f,0.f,100.f},50.f,0 };
-			//GeometryUtils::HitTest_Sphere(testSphere, hitRay, closestHit);
-
 			if (closestHit.didHit)
 			{
-				//finalColor = materials[closestHit.materialIndex]->Shade();
-				
-				//const float scaledT = (closestHit.t - 50.f) / 40.f;
-				//finalColor = { scaledT, scaledT,scaledT }; 
-				
 				finalColor = materials[closestHit.materialIndex]->Shade();
 			}
 		

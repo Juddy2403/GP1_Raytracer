@@ -19,10 +19,11 @@ namespace dae
 			if (tCa < 0) return false;
 
 			const float od{ (sphere.origin - tCa * ray.direction).Magnitude() };
-			//if (od >= sphere.radius) return false;
+			if (od >= sphere.radius) return false;
 
-			const float tHc{ sqrt(sphere.radius * sphere.radius - od * od) };
+			const float tHc{ sphere.radius * sphere.radius - od * od };
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
+
 			if (tZero < ray.min || tZero > ray.max) return false;
 
 			if (!ignoreHitRecord)
@@ -30,7 +31,7 @@ namespace dae
 				const Vector3 intersectRay{ ray.origin + tZero * ray.direction };
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = sphere.materialIndex;
-				hitRecord.normal = intersectRay.Normalized();
+				hitRecord.normal = Vector3{ sphere.origin, intersectRay }.Normalized();
 				hitRecord.origin = intersectRay;
 				hitRecord.t = tZero;
 			}
