@@ -1,0 +1,72 @@
+\begin{document}
+\title{Lighting}
+\subsection{Lighting}
+\begin{script}
+time = new doubleanimator(1.0);
+cam= new camera([1.5,-10.0,2.0],[0.5,1.0,1.0]);
+p1 = new point3d("A", 1.5,0.2,2.0);
+p2 = new point3d("B",3.0,4.0,0.75);
+p3 = new point3d("C",-1.0,4.0,0.4);
+t = new triangle3d("δ1",p1,p2,p3);
+t.setStyleName("dofConstraint");
+
+n = normal(t);
+n.setCaption("n");
+n.setCaptionT(15.0);
+n.setStyleName("zAxis");
+
+P = 0.6*p1 + 0.25*p2 + 0.15*p3;
+t.setNormalBasePoint(P);
+
+L = new point3d("L", 0.0,2.0,4.0);
+
+l = L-P;
+ln = l / length(l);
+ln.setCaption("l_n");
+ln.setStyleName("lightVector");
+seg1 = new vsegment3d("",P,L);
+
+I = dot(ln, n);
+I.setCaption("I_D");
+nf = new decimalformat("#.##");
+
+
+a = new angle3d("α", ln,n);
+af = new angleformat("#.#°"); 
+arc2 = new arc3d("",n,ln);
+
+r = length(l);
+
+t.setIntensity(I);
+
+
+\end{script}
+
+\begin{picture3d}
+\width{640}
+\extents{-1,-1,5,5}
+\begin{text}
+The {$ln} and {$n} vector are unit vectors!
+\end{text}
+\include{time,cam,p1,p2,p3,t,P,L,seg1,ln,arc2,a}
+
+\begin{part}
+\begin{text}
+Because the dot product is relative to the cosine of {$a}, the light intensity on the triangle is 0 if {$a} = 90°. \\
+
+{$a} = {#a>>af} \\ then I = {#I>>nf}
+\end{text}
+\include{a}
+\end{part}
+\begin{part}
+\begin{text}
+The intensity calculated with the dot product is then:\\ {$I} = {&I$(ln, n)} = {#I>>nf}.
+\end{text}
+
+\end{part}
+\end{picture3d}
+
+\begin{rightcolumn}
+Diffuse lighting is lighting that is a combination of all the light sources in a scene. A cheap technique to calculate diffuse lighting is to use the dot product of the light vector with the normal of the triangle:
+\end{rightcolumn}
+\end{document}

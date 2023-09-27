@@ -1,0 +1,129 @@
+\begin{document}
+\title{Absorption and scattering}
+\chapter{Absorption and scattering}
+\section{Conservation of energy}
+When traveling in an inhomogeneous medium or translucent material, light can be \green{absorbed} or \green{scattered}.\\
+\\
+\green{Absorption} of light: the energy of the photons is used to heat up the material. A non visible example is
+ infrared light which can be used to warm up human skin.
+\\ \\
+When light is \green{scattered}, the ray direction changes randomly, and the amount of deviation depends on the material. Scattering randomizes light direction, but doesn’t change its \green{intensity}.
+
+\begin{p}{align=center}
+\includegraphics[scale=0.2]{images/subsurfacescattering.png}
+\end{p}
+
+\begin{script}
+r = new rect([1,2],[8,2]);
+r.setStyleName("boxLab2");
+lp = new point("",2,8);
+sp = new point("P",5,4);
+sp.setCaptionDirection(SOUTH,10);
+l = (sp-lp);
+ln = l / length(l);
+ln.setStyleName("lightVector");
+ln.setCaption("l_n");
+s = new segment(lp,sp,"projection");
+rl1 = new vector(2*cos(.2),2*sin(.2),"lightVector",sp);
+rl2 = new vector(2*cos(.35),2*sin(.35),"lightVector",sp);
+rl3 = new vector(2*cos(.47),2*sin(.47),"lightVector",sp);
+
+sp1 = new point(5.5,3.5);
+sa1 = new circle([5.5,3.5],.1,"boxLab");
+
+rl4 = sp1-sp;
+rl4.setStyleName("yAxis");
+rl4.setCaption("");
+
+sp2 = new point(6,3.4);
+sa2 = new circle([6,3.4],.1,"boxLab");
+
+rl5 = sp2-sp;
+rl5.setStyleName("yAxis");
+rl5.setCaption("");
+
+sp3 = new point(5.5,2.75);
+sa3 = new circle([5.5,2.75],.1,"boxLab");
+rl6 = sp3-sp;
+rl6.setStyleName("yAxis");
+rl6.setCaption("");
+
+
+sp4 = new point(5.5,2.2);
+sa4 = new circle([5.5,2.2],.1,"boxLab");
+sp5 = new point(6,2.7);
+sa5 = new circle([6,2.7],.1,"boxLab");
+sp6 = new point(5.75,3.1);
+sa6 = new circle([5.75,3.1],.1,"boxLab");
+
+sp7 = new point(6.5,2.7);
+sa7 = new circle([6.5,2.7],.1,"boxLab");
+sp8 = new point(7.2,2.9);
+sa8 = new circle([7.2,2.9],.1,"boxLab");
+sp9 = new point(6.75,3.4);
+sa9 = new circle([6.75,3.4],.1,"boxLab");
+
+
+ss1 =new vector(sp3,sp5,"projection");
+ss2 =new vector(sp3,sp4,"projection");
+ss3 = new vector(sp3,sp4,"projection");
+ss4 = new vector(sp6,sp7,"projection");
+ss5 = new vector(sp1,sp6,"projection");
+ss6 = new vector(sp2,sp8,"projection");
+ss7 = new vector(sp2,sp9,"projection");
+
+sc1 = new vector(sp4,[4,6],"xAxis" );
+sc2 = new vector(sp5,[7,6],"xAxis" );
+sc3 = new vector(sp6,[6.5,5.5],"xAxis" );
+sc4 = new vector(sp7,[5.5,5.5],"xAxis" );
+sc5 = new vector(sp8,[7.5,4.5],"xAxis" );
+sc6 = new vector(sp9,[7.5,5.5],"xAxis" );
+
+sc7 = new vector(sp3,[3.5,5.5],"xAxis" );
+
+\end{script}
+
+\begin{rightcolumn}
+\\ \\
+We can now take a look at what happens when a ray hits an object (solid or liquid):
+\begin{picture}
+\width{640}
+\begin{part}
+\begin{text}
+We start with a single ray that hits the surface at point {$sp}. You can think of this ray
+ as a collection of photons that hits the surface at this exact point.
+\end{text}
+\include{r,ln,lp,sp,s,sa1,sa2,sa3,sa4,sa5,sa6,sa7,sa8,sa9}
+\end{part}
+
+\begin{part}
+\begin{text}
+The simplest part is the reflections of this ray directly out of the material.
+\end{text}
+\include{rl1,rl2,rl3}
+\end{part}
+
+\begin{part}
+\begin{text}
+Some of the photons in this ray will be refracted into the material.
+\end{text}
+\include{rl4,rl5,rl6}
+\end{part}
+
+\begin{part}
+\begin{text}
+Some of the photons that are refracted will be further scattered \b{inside} the material.
+\end{text}
+\include{ss1,ss2,ss3,ss4,ss5,ss6,ss7}
+\end{part}
+
+\begin{part}
+\begin{text}
+And finally, some of the photons that are refracted will be further scattered \b{outside} of the material.
+\end{text}
+\include{sc1,sc2,sc3,sc4,sc5,sc6,sc7}
+\end{part}
+
+\end{picture}
+\end{rightcolumn}
+\end{document}

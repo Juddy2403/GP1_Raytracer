@@ -1,0 +1,48 @@
+\begin{document}
+\title{Magnitude of a 2D Vector}
+\section{Magnitude of a 2D Vector}
+The \red{magnitude} of a vector is a simple application of the Pythagorean theorem:
+
+\begin{script}
+nf = new decimalformat("#.##");
+p = new point("",4.0,1.0);
+v = new vector("v", p);
+v.setLabel("{$v} = {#v'>>nf}");
+v.setStyleName("zAxis");
+o = new point("",0,0);
+
+xAxis = new line(0.0);
+cosa=new projectpoint("",p,xAxis);
+cosa.setCaptionDirection(SOUTH,7.5); 
+  
+y =new measurement("y", p,cosa);
+y.setLabel("\green{y}");
+y.setStyleName("yAxis");
+x =new measurement("x", o,cosa);
+x.setLabel("\red{x}");
+x.setDistance(-0.75);
+x.setStyleName("xAxis");
+
+s = new segment("",o,cosa);
+s.setStyleName("projection");
+
+l2 = x^2+y^2;
+m1 = new measurement("m1",o,p); 
+m1.setLabel("\orange{magnitude} (hypothenusa)");
+m1.setDistance(0.75);
+length = sqrt(l2);
+\end{script}
+
+
+
+
+
+\begin{picture}
+\width{1200}
+\extents{-1,-1,5,2}
+\include{p,v,cosa,y,x,m1,s}
+\end{picture}
+
+The length of the vector is given as:\\
+ |{$v}|= \orange{magnitude} = {&length} = {&length#(x,y)} = {#length>>nf}
+\end{document}

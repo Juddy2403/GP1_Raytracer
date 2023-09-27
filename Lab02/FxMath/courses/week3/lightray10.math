@@ -1,0 +1,24 @@
+\begin{document}
+\title{BRDF}
+\chapter{BRDF}
+How light scatters depends on the material. There are a lot of different models. All of them try to simulate the light scattering with a mathematical function. 
+\\ \\
+This function is called the \green{Bidirectional Reflectance Distribution Function} (BRDF) or \green{Bidirectional Scattering Distribution Function} (BSDF).
+\\ \\
+For a BRDF to be physically plausible, it must be \green{energy conserving} and exhibit \green{reciprocity}.\\ 
+\\Reciprocity refers to the Helmholtz Reciprocity Principle, which states that incoming and outgoing light rays can be considered as reversals of each other without affecting the outcome of the BRDF.
+
+\begin{script}
+a = new axis3d();
+cam = new camera([5,5,5],[0,0,0]);
+cone = new cone3d(0.1,1,[0,0,0],[1,0,0],3);
+\end{script}
+
+\begin{rightcolumn}
+\begin{picture3d}
+\width{640}
+\include{cone,cam,a}
+\end{picture3d}
+\end{rightcolumn}
+
+\end{document}

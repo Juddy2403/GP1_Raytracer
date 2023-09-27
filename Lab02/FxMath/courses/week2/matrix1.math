@@ -1,0 +1,58 @@
+\begin{document}
+\title{Transformation Matrix}
+\section{Matrix}
+For 3D rendering we have to make use of matrices with 4 rows and 4 columns to model \b{affine} transformations.
+
+\begin{script}
+
+cam = new camera([7.961,7.348,7.317] , [2.961,2.348,2.317] );
+nf=new decimalformat("#.##");
+v1=new vector3d("a",1,0,0);
+v1.setStyleName("xAxis");
+v2=new vector3d("b",0,1,0);
+v2.setStyleName("yAxis");
+v3=new vector3d("c",0,0,1);
+v3.setStyleName("zAxis");
+T=new point3d("T",0,0,0);
+mm= new matrix44("M_1",T,v1,v2,v3);
+\end{script}
+
+\\Suppose we have a new basis defined by the vectors {$v1}, {$v2} and {$v3} and a translation of {$T}.
+
+\\ \\Let's start with simple basis vectors and translation:
+\begin{p}
+\begin{enumerate}
+\item {$v1} = {#v1>>nf}
+\item {$v2} = {#v2>>nf}
+\item {$v3} = {#v3>>nf}
+\item {$T} = {#T>>nf}
+\end{enumerate}
+\end{p}
+The resulting transformation matrix is: \\
+
+\begin{p}{align=center}
+{&mm'&(ccs)} = {#mm' >>nf} 
+\end{p}
+
+Which is the \b{identity} or \b{unit} matrix, in other words this transformation will do
+ nothing when applied to points or vectors.
+
+
+\begin{rightcolumn}
+\section{Row or column major matrix}
+When we show a matrix we use \b{row} major order which corresponds to the
+ DirectX convention (not the mathematical or OpenGL convention).
+\\This means that the 3 vectors and translation are stored in the rows of the
+ matrix.
+\section{Visual representation of a matrix}
+A matrix that was constructed with 3 basis vectors and a translation
+ can be represented visually:
+
+\begin{picture3d}
+\dimension{640,480}
+\include{cam,mm}
+\end{picture3d}
+
+\end{rightcolumn}
+
+\end{document}

@@ -1,0 +1,86 @@
+\begin{document}
+\title{Sphere class}
+\section{Sphere class}
+
+\begin{listing}{title=raytracer_math/Sphere.h,width=900}
+\begin{code}
+#pragma once
+#include "Vector3.h"
+namespace DAE {
+	class Sphere
+	{
+	public:
+		Sphere(Vector3 center, float radius, Vector3 color);
+		const Vector3& GetCenter() const;
+		const Vector3& GetColor() const;
+		float GetRadius() const;
+	private:
+		Vector3 m_Center;
+		Vector3 m_Color;
+		float m_Radius;
+	};
+}
+\end{code}
+\begin{part}
+\begin{text}
+The \type{Sphere} class is a simple description of a sphere with an origin and a radius. \\
+The \type{Sphere} class also has a simple material defined where we only describe a \green{diffuse} color.
+\end{text}
+\end{part}
+
+\begin{part}
+\begin{text}
+The center of the sphere is modeled as Vector3 object, therefore we need to \string{include} the
+ \type{Vector3.h} header file to be able to use this class.
+\end{text}
+\include{1,2}
+\end{part}
+
+\begin{part}
+\begin{text}
+We place the class in the \sourcecode{DAE} namespace.
+\end{text}
+\include{3,16}
+\end{part}
+
+\begin{part}
+\begin{text}
+We simply name the class : \type{Sphere}
+\end{text}
+\include{4,5,15}
+\end{part}
+
+\begin{part}
+\begin{text}
+The Sphere class has three datamembers:
+\begin{enumerate}
+\item \parameter{m_Center} : the center of the sphere.
+\item \parameter{m_Color}  : the diffuse color of the sphere. The color is modelled with \red{red},\green{green} and \blue{blue} values between 0 and 1.
+\item \parameter{m_Radius} : the radius of the sphere.
+\end{enumerate}
+\end{text}
+\include{11-14}
+\end{part}
+
+\begin{part}
+\begin{text}
+The constructor creates a sphere object with the given center and radius.
+\end{text}
+\include{6,7}
+\end{part}
+
+\begin{part}
+\begin{text}
+There are three \function{Get} member functions to get the center and radius from this object.
+
+\begin{enumerate}
+\item \function{GetCenter} : return the center of the sphere.
+\item \function{GetColor} : return the color of the sphere. 
+\item \function{GetRadius} : returns the radius of the sphere.
+\end{enumerate}
+\end{text}
+\include{8-10}
+\end{part}
+
+\end{listing}
+\end{document}

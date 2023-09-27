@@ -1,0 +1,91 @@
+\begin{document}
+\title{Light Ray - Refraction}
+\chapter{Light Ray - Refraction}
+When a light ray goes from one medium to another, the light is refracted:
+\\ 
+\begin{p}{align=center}
+\includegraphics[scale=0.25]{images/refraction.jpg}
+\end{p}
+\\
+The refraction can be calculated with \green{Snell's  law} which states
+the following: \\
+
+\begin{script}
+a = 1.0;
+a.setCaption("α");
+
+n1 = 0.2;
+n1.setCaption("n_1");
+n2 = 0.4;
+n2.setCaption("n_2");
+
+ratio1 = sin(a)/n2;
+
+b = 1.0;
+b.setCaption("β");
+
+ratio2 = sin(b)/n1;
+
+P = new point("P",0,0);
+alpha = -1.0;
+salpha = new slider("α",alpha,[0,-PI/2],[20,20],200,EAST);
+n1s = new slider("n_1",n1,[0,1],[20,50],200,EAST);
+n1s.setLabel("{$n1}={#n1}");
+
+n2s = new slider("n_2",n1,[0,1],[20,80],200,EAST);
+n2s.setLabel("{$n2}={#n2}");
+
+l = new vector("r_i", cos(alpha),sin(alpha));
+L = new point("L", -2*cos(alpha),-2*sin(alpha));
+l.setBasePoint(L);
+l.setStyleName("lightVector");
+
+n = new vector("n",0,1);
+n.setStyleName("zAxis");
+
+s = new segment("",L,P);
+s.setStyleName("projection");
+
+surface = new rect([-1,0],[2,-0.25]);
+surface.setStyleName("boxOrange");
+N = new point("N",0,1);
+
+angle = new angle("α",N,P,L);
+angle.setLabelDirection(0,50);
+angle.setRadius(50);
+
+beta = asin(n1*sin(alpha)/n2);
+sb = sin(-beta);
+cb = -cos(beta);
+ro = new vector("r_o",sb,cb);
+ro.setStyleName("lightVector");
+
+N2 = new point("",0,-1);
+angle2 = new angle("β",N2,P,ro);
+angle2.setLabelDirection(0,50);
+angle2.setRadius(50);
+angle2.setStyleName("boxRed2");
+
+\end{script}
+
+\begin{p}{align=center}
+{&ratio1} = {&ratio2}
+\end{p}
+
+with {$n1} and {$n2} the refractive indices of the two media. For example the refractive index
+ of water is \mathvalue{1.33} and the refractive index of air is \mathvalue{1.00003}.
+
+\begin{p}{boxStyle=boxRed}
+\b{Note:} This is actually an important point of PBR. By trying to work in a physically accurate way
+ we can use actual physical values. So instead of tweaking all the values in a rendering we
+ can just look up values from real life measurements.
+\end{p}
+
+\begin{rightcolumn}
+\begin{picture}
+\width{640}
+\extents{-2,-2,2,2}
+\include{P,salpha,L,l,n,s,surface,angle,n1s,n2s,ro,angle2}
+\end{picture}
+\end{rightcolumn}
+\end{document}

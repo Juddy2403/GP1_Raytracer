@@ -1,0 +1,29 @@
+\begin{document}
+\title{Raytracer introduction}
+\chapter{Raytracer introduction}
+\section{Mathematical background}
+\includegraphics{images/mathematics.png}
+\begin{rightcolumn}
+\section{Programming}
+\begin{listing}{language=cpp,width=600,title=raytracer_math/Vector3.h}
+\begin{code}
+#pragma once
+namespace DAE
+{
+	class Vector3
+	{
+	public:
+		Vector3()=default;
+		Vector3(float x, float y, float z);
+		Vector3(Vector3 from, Vector3 to);
+
+	private:
+		float m_X, m_Y, m_Z;
+	};
+}
+\end{code}
+\end{listing}
+\section{Rendering}
+\includegraphics{images/endresult.png}
+\end{rightcolumn}
+\end{document}

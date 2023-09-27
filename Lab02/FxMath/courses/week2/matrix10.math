@@ -1,0 +1,47 @@
+\begin{document}
+\title{Transformation Matrix - Translation Inverse}
+\section{Inverse}
+
+
+
+
+
+\begin{script}
+cam = new camera([5,5,5],[0,0,0]);
+nf=new decimalformat("#.##");
+v1=new vector3d("a",1,0,0);
+v1.setStyleName("xAxis");
+v2=new vector3d("b",0,1,0);
+v2.setStyleName("yAxis");
+v3=new vector3d("c",0,0,1);
+v3.setStyleName("zAxis");
+T=new point3d("T",2,3,-1);
+mm= new matrix44("M_1",T,v1,v2,v3);
+cf = new cellformat("boxRed2",[0,3],[2,3]);
+
+mm2 = new matrix44("M_1^Inv",T,v1,v2,v3);
+O = new point3d("T",0,0,0);
+I = new matrix44("I" ,O,v1,v2,v3);
+\end{script}
+
+\subsection{Inverse}
+
+For transformation matrices the following definition applies for the inverse operation:\\
+
+{$mm}.{$mm2} = {$I} = {#I' } \\ \\
+
+\begin{p}{boxStyle=boxRed}
+In words: the product of a matrix with its \b{inverse} results in the identity matrix.
+\end{p}
+
+\subsection{Inverse of translation matrix}
+
+Given a matrix with a translation {$T} defined as {#T} \\ \\
+{&mm' >>cf&(ccs)} = {#mm' >>cf} \\ \\
+
+
+\begin{p}{boxStyle=boxBlue,vskip=20}
+What is the inverse of this matrix?
+\end{p}
+
+\end{document}

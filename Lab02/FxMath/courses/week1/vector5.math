@@ -1,0 +1,42 @@
+\begin{document}
+\title{Dot product}
+\section{Dot product - 3D}
+\begin{script}
+
+cam= new camera([4.394,-10.276,1.733] , [-0.526,2.914,1.076] );
+time = new doubleanimator(1.0);
+v1 = new vector3d("v_1",1.0,2.0,2.0);
+v1.setDraggable(true);
+v1.setDrawXYBase(true);
+v1.setStyleName("xAxis" );
+v2 = new vector3d("v_2",3.0,1.0,1.0);
+v2.setDraggable(true);
+v2.setDrawXYBase(true);
+v2.setStyleName("yAxis");
+angle = new angle3d("α",v1,v2);
+angle.setCaptionRadius(0.2);
+angle.setRadius(0.4);
+dp = dot(v1,v2);
+\end{script}
+
+\begin{picture3d}
+\dimension{1200,640}
+\extents{-3,-2,3,2}
+\begin{text}
+Given two 3D vectors {$v1} and {$v2} which are defined as:
+\begin{enumerate}
+\item {$v1} = {#v1} 
+\item {$v2} = {#v2}
+\end{enumerate}
+\end{text}
+\include{time,cam,v1,v2}
+\begin{part}
+\begin{text}
+The dot product is defined as :\\
+{&dp} = {&dp&(trig)} \\
+\b{AND also:} \\
+{&dp} = {&dp&(inner)} \\
+\end{text}
+\include{angle}
+\end{part}
+\end{picture3d}\end{document}

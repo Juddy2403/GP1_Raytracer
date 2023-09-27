@@ -1,0 +1,60 @@
+\begin{document}
+\title{Transformation Matrix - Scale of point}
+\section{Transformation Matrix - Scale}
+
+\begin{script}
+cam = new camera([5,5,5],[0,0,0]);
+nf=new decimalformat("#.##");
+v1=new vector3d("a",2,0,0);
+v1.setStyleName("xAxis");
+v2=new vector3d("b",0,3,0);
+v2.setStyleName("yAxis");
+v3=new vector3d("c",0,0,10);
+v3.setStyleName("zAxis");
+T=new point3d("T",2,8,9);
+mm= new matrix44("M_1",T,v1,v2,v3);
+
+p = new point3d("P",2,4,3);
+pm = new matrix41(p);
+
+p2 = new point3d("P'",6,20,39);
+pm2 = new matrix41(p2);
+
+u = new vector3d("u",4,5,7);
+um = new matrix41(u);
+u2 = new vector3d("u'",8,15,70);
+um2 = new matrix41(u2);
+\end{script}
+
+\\Suppose we have a new basis defined by the vectors {$v1}, {$v2} and {$v3} and a translation of {$T}
+ which is now a concrete value.
+
+\\ \\We now use scaled basis vectors and a non zero translation. To make the
+ concept clearer we use a non uniform scale:
+\begin{p}
+\begin{enumerate}
+\item {$v1} = {#v1>>nf}
+\item {$v2} = {#v2>>nf}
+\item {$v3} = {#v3>>nf}
+\item {$T} = {#T>>nf}
+\end{enumerate}
+\end{p}
+The resulting transformation matrix is: \\
+
+\begin{p}{align=center}
+{$mm} = {&mm' &(ccs)} = {&mm'>>nf} 
+\end{p}
+
+\begin{rightcolumn}
+\subsection{Point transformation}
+
+The point {$p} is defined as {#p}. \\ \\
+
+{&p2} =  {&pm' &(ccs)} . {&mm} = \\
+{&p2} = {#pm' }.{#mm' } = {#pm2}
+
+\\ \\The transformed point is the \b{scaled} original point with the translation added to it.
+
+
+\end{rightcolumn}
+\end{document}

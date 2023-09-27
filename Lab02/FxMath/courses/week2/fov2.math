@@ -1,0 +1,64 @@
+\begin{document}
+\title{Field of View : Tangent}
+\chapter{Field of View : Tangent}
+
+\begin{script}
+af = new angleformat("#.##°");
+nf = new decimalformat("#.##");
+C=new point("C",0,0);
+C.setDraggable(false);
+alpha = 1.5708;
+alpha.setCaption("α");
+salpha = new slider("α",alpha,[0,PI],[50,50],200,EAST);
+salpha.setLabel("{$salpha} = {#alpha>>af}");
+
+yvec = new vector("y",0,1);
+yvec.setStyleName("yAxis");
+
+fov = tan(alpha/2);
+
+
+T = new point("T",1,fov);
+M = new point("M",1,0);
+B = new point("B",1,-fov);
+
+angle = new angle("α", B, C,T);
+angle.setRadius(60);
+angle.setLabelDirection(0,70);
+
+s1 = new segment("",C,B);
+s1.setStyleName("projection");
+s2 = new segment("",C,T);
+s2.setStyleName("projection");
+s3 = new segment("",B,T);
+s4 = new segment("",C,M);
+s4.setStyleName("projection");
+
+m1 = new measurement("",T,M);
+m1.setLabel("scale factor = {#m1>>nf}" );
+
+m2 = new measurement("",C,M);
+m2.setLabel("{#m2}");
+m2.setDistance(-0.5);
+
+
+alpha2 = salpha/2;
+
+angle2 = new angle("",M,C,T);
+angle2.setStyleName("angle2");
+angle2.setLabel("{&alpha2}");
+angle2.setRadius(90);
+angle2.setLabelDirection(0,100);
+\end{script}
+
+
+\begin{picture}
+\width{640}
+\extents{-2,-2,2,2}
+\begin{text}
+Since the distance between {$C} and {$M} is {#m2}, we have a unit circle and the
+ scale factor simply becomes: {&fov}
+\end{text}
+\include{C,salpha,yvec,T,B,M,s1,s2,s3,s4,m1,angle2,angle,m2}
+\end{picture}
+\end{document}
