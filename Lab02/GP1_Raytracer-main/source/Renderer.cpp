@@ -32,10 +32,6 @@ void Renderer::Render(Scene* pScene) const
 	{
 		for (int py{}; py < m_Height; ++py)
 		{
-			//float gradient = px / static_cast<float>(m_Width);
-			//gradient += py / static_cast<float>(m_Width);
-			//gradient /= 2.0f;
-
 			
 			Vector3 rayDirection{};
 			float cx{}, cy{}, aspectRatio{ static_cast<float>(m_Width) / static_cast<float> (m_Height) };
@@ -43,7 +39,7 @@ void Renderer::Render(Scene* pScene) const
 			cy = 1 - 2 * (py + 0.5f) / m_Height;
 			rayDirection = Vector3{ cx, cy ,1 };
 			rayDirection.Normalize();
-			Ray hitRay{ {0,0,0}, rayDirection };
+			Ray hitRay{ camera.origin, rayDirection };
 			
 			ColorRGB finalColor{};
 			HitRecord closestHit{};

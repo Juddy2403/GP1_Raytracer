@@ -19,7 +19,7 @@ namespace dae
 			if (tCa < 0) return false;
 
 			const float od{ (sphere.origin - tCa * ray.direction).Magnitude() };
-			if (od >= sphere.radius) return false;
+			//if (od >= sphere.radius) return false;
 
 			const float tHc{ sqrt(sphere.radius * sphere.radius - od * od) };
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
