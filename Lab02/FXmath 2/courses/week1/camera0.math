@@ -1,0 +1,108 @@
+\begin{document}
+\title{Raster space}
+\subsection{Raster space}
+
+\begin{script}
+nf = new decimalformat("#.###");
+P = new point("",-0.5,18.5);
+x = new vector("X",5,0);
+x.setBasePoint(P);
+x.setStyleName("xAxis");
+
+y = new vector("Y",0,-5);
+y.setStyleName("yAxis");
+y.setBasePoint(P);
+
+r = new rect([0,0],[32,18]);
+r.setStyleName("yCell");
+
+pixel1 = new rect([5,7],[1,1]);
+pixel1.setStyleName("xCell");
+
+pixel2 = new rect([12,2],[1,1]);
+pixel2.setStyleName("zCell");
+
+m1 = new measurement("",[0,0],[32,0]);
+m1.setLabel("\red{width} in pixels");
+m1.setDistance(-2.0);
+
+m2 = new measurement("",[32,0],[32,18]);
+m2.setLabel("\green{height} in pixels");
+m2.setDistance(-2.0);
+
+p1 = new point("p_1",5.5,10.5);
+p2 = new point("p_2",11.5,15.5);
+
+mp11 = new measurement("",[0,7.5],[5.5,7.5]);
+mp11.setLabel("\red{5.5}");
+mp11.setDistance(0);
+mp12 = new measurement("",[5.5,7.5],[5.5,18]);
+mp12.setLabel("\green{10.5}");
+mp12.setDistance(0);
+
+mp21 = new measurement("",[0,2.5],[12.5,2.5]);
+mp21.setLabel("\red{11.5}");
+mp21.setDistance(0);
+mp22 = new measurement("",[12.5,2.5],[12.5,18]);
+mp22.setLabel("\green{15.5}");
+mp22.setDistance(0);
+
+width = 64;
+height = 48;
+ar = width/height;
+\end{script}
+
+\begin{picture}
+\width{800}
+\extents{-2,-5,35,20}
+
+\begin{part}
+\begin{text}
+We start with a rectangle that represents the \blue{visible screen} that
+ will be shown on the monitor.
+\end{text}
+\include{r}
+\end{part}
+
+\begin{part}
+\begin{text}
+A screen is defined as a region of a computerscreen where 
+an image will be shown. In the case of a \blue{raytracer} this will be
+ a raytraced image. The \red{width} and \green{height} of the viewport
+ are defined in pixels.\\ \\
+An important property is the aspect ratio which is defined as the ratio of width and height:\\
+{$ar} = {&ar} = {&ar#(width,height)} = {#ar>>nf}
+\end{text}
+\include{m1,m2}
+\end{part}
+
+\begin{part}
+\begin{text}
+The coordinates of a viewport work a bit different compared to a normal
+ Cartesian axis system.\\ The {$x} axis is the regular goes from left to right, meaning 
+that small values for the \red{x}-coordinate correspond the pixels on the left.\\
+The {$y} axis runs from top to bottom, this means that smaller values for the \green{y}-coordinate correspond
+ to pixels that are on top.
+\end{text}
+\include{x,y}
+\end{part}
+
+\begin{part}
+\begin{text}
+A \bold{pixel} is defined by an \red{x} and a \green{y} coordinate in \red{pixels}. \\The red pixel shown
+ has coordinates of {#p1} . \\
+These coordinates are \bold{zero} based, but we want to use the center of the pixel 
+(follows OpenGL, DirectX10 and raytracer conventions).
+\end{text}
+\include{pixel1,mp11,mp12}
+\end{part}
+
+\begin{part}
+\begin{text}
+The blue pixel has coordinates {#p2} . \\
+\end{text}
+\include{pixel2,mp21,mp22}
+\end{part}
+
+\end{picture}
+\end{document}

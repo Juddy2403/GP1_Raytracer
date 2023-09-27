@@ -1,0 +1,24 @@
+\begin{presentation}
+\title{Raytracer Camera}
+\titleslide{titleslide.math}
+\include{matrix1.math}
+\include{matrix2.math}
+\include{matrix3.math}
+\include{matrix4.math}
+\include{matrix4b.math}
+\include{matrix5.math}
+\include{matrix5b.math}
+\include{matrix6.math}
+\include{matrix7.math}
+\include{matrix8.math}
+\include{matrix9.math}
+\include{camera1.math}
+\include{camera2.math}
+\include{camera2b.math}
+\include{camera3.math}
+\include{camera4.math}
+\include{fov1.math}
+\include{fov2.math}
+\include{fov3.math}
+\include{ray1.math}
+\end{presentation}

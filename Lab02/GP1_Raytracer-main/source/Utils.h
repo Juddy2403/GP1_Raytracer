@@ -16,9 +16,9 @@ namespace dae
 			const Vector3 rayToSphereDist{ sphere.origin - ray.origin };
 
 			const float tCa{ Vector3::Dot(rayToSphereDist, ray.direction) };
-			if (tCa < 0) return false;
+			//if (tCa < 0) return false; //may cause problems?
 
-			const float od{ (sphere.origin - tCa * ray.direction).Magnitude() };
+			const float od{ (rayToSphereDist - tCa * ray.direction).Magnitude() };
 			if (od >= sphere.radius) return false;
 
 			const float tHc{ sqrt(sphere.radius * sphere.radius - od * od) };

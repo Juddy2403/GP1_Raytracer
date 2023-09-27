@@ -1,0 +1,6 @@
+\begin{presentation}
+\title{A simple raytracer}
+\titleslide{title.math}
+\include{week1\w1.mathp}
+\include{week2\cameraandplane.mathp}
+\end{presentation}

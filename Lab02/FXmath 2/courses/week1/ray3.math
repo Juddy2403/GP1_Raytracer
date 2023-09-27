@@ -1,0 +1,73 @@
+\begin{document}
+\title{Ray sphere intersection}
+\section{Ray sphere intersection}
+
+\begin{script}
+
+time = new doubleanimator(1.0);
+a =new axis3d();
+cam2 =new camera([-10.258,0.714,3.166] , [-3.044,2.084,2.011] );
+
+T = new point3d("T",1.0,1.0,0.5);
+
+r = new vector3d("r_d", 1.0,1.0,0.5);
+
+r.setBasePoint(T);
+r.setStyleName("xAxis");
+
+rn = normalize(r);
+rn.setStyleName("xAxis");
+rn.setCaption("r_N");
+rn.setBasePoint(T);
+
+s = 2.0;
+sSlider = new slider("s",s, [0.1,5.0], [100.0,30.0], 300.0, EAST);
+
+
+
+
+SC = new point3d("C",3.5,3.5,2);
+radius = 1.0;
+rslider = new slider("r",radius,[0.5,5],[100,60],300,EAST);
+s1 = new sphere3d("s1",SC,rslider);
+s1.setSphereStyleName("yellowCell");
+
+l = SC - T;
+ld = length(l);
+
+tca = dot(l,rn);
+od = sqrt(ld^2 - tca^2);
+
+thc = sqrt(radius^2 - od^2);
+t0 = tca - thc;
+
+I = T+t0*rn;
+I.setStyleName("point");
+
+seg1 = new vsegment3d("",T,I);
+
+\end{script}
+
+\begin{picture3d}
+\dimension{1200,640}
+\extents{-2,-2,7,7}
+\scale{55.11,55.11}
+\begin{text}
+The intersection of the ray with the sphere can be found where the distance of point {$R} to {$SC} is
+ equal to the radius of the sphere.
+\end{text}
+\include{cam2,T,a,time,SC,s1,rn}
+
+
+
+\begin{part}
+\begin{text}
+Now we can answer the question where the ray intersects sphere. The formula
+ will be derived in 2D for easier visualization.
+\end{text}
+\include{I,seg1}
+\end{part}
+
+\end{picture3d}
+
+\end{document}

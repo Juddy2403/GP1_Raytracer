@@ -1,0 +1,14 @@
+\begin{presentation}
+\title{Raytracer PBR}
+\titleslide{titleslide.math}
+\include{lightray1.math}
+\include{lightray2.math}
+\include{lightray3.math}
+\include{lightray4.math}
+\include{lightray5.math}
+\include{lightray6.math}
+\include{lightray7.math}
+\include{lightray8.math}
+\include{lightray9.math}
+\include{lightray10.math}
+\end{presentation}

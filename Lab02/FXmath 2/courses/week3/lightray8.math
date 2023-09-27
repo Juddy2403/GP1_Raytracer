@@ -1,0 +1,56 @@
+\begin{document}
+\title{Microfacet shadowing and masking}
+\chapter{Microfacet shadowing and masking}
+\section{Shadowing}
+\begin{script}
+s1 = new segment([0,0.25],[1.5,1.2],"xAxis");
+s2 = new segment([1.5,1.2],[3,1],"zAxis");
+s3= new segment([3,1],[4,3],"xAxis");
+s4 = new segment([4,3],[4.5,2],"xAxis");
+s5 = new segment([4.5,2],[6.3,2.7],"xAxis");
+s6 = new segment([6.3,2.7],[7.8,1.8],"xAxis");
+
+s7 = new segment([0,1.3],[8,1.3],"yAxis");
+
+v1 = new vector(-0.2,1.5,"zAxis",[4,1.3]);
+v1.setCaption("n");
+
+ms1 = new vector(0.2,1.5,"zAxis2",[2.25,1.1]);
+ms1.setCaption("n_m");
+
+lv1 = new vector(1.4*cos(4),1.4*sin(4),"lightVector",[5,4]);
+lv2 = new vector(1.7*cos(4),1.7*sin(4),"lightVector",[5.4,4]);
+lv3 = new vector(3.8*cos(4),3.8*sin(4),"lightVector",[4.6,4]);
+lv4 = new vector(3.7*cos(4),3.7*sin(4),"lightVector",[4.2,4]);
+
+lv7 = new vector(3.5*cos(-1),3.5*sin(-1),"lightVector",[.6,4]);
+rlv7 = new vector(1.5*cos(.8),1.5*sin(.8),"angle2",[2.5,1.1]);
+
+lv5 = new vector(3.4*cos(-1),3.4*sin(-1),"lightVector",[.3,4]);
+rlv5 = new vector(2.4*cos(.8),2.4*sin(.8),"angle2",[2.15,1.15]);
+
+lv6 = new vector(3.4*cos(-1),3.4*sin(-1),"lightVector",[0,4]);
+rlv6 = new vector(3.5*cos(.8),3.5*sin(.8),"angle2",[1.85,1.15]);
+\end{script}
+\begin{picture}
+\width{520}
+\extents{0,-1,8,4}
+\begin{text}
+For each microfacet and for a given roughness, PBR tries to model how much self shadowing
+ there will be for a given pixel.
+\end{text}
+\include{s1,s2,s3,s4,s5,s6,ms1,lv1,lv2,lv3,lv4}
+\end{picture}
+\begin{rightcolumn}
+\section{Masking}
+\begin{picture}
+\width{520}
+\extents{0,-1,8,4}
+\begin{text}
+Light that would normally be reflected (and thus contribute to specular reflection) can also be \green{blocked = masked}
+ by another microfacet. 
+\end{text}
+\include{s1,s2,s3,s4,s5,s6,ms1,lv5,rlv5,lv6,rlv6,lv7,rlv7}
+\end{picture}
+\end{rightcolumn}
+\end{document}

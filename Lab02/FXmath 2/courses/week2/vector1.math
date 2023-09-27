@@ -1,0 +1,94 @@
+\begin{document}
+\title{Vector - Math}
+\section{Vector}
+
+\subsection{Notation}
+\begin{script}
+P = new point("P", 1,3);
+v1 = new vector("v_1",10,5);
+v3 = new vector("v_1",10,5);
+v3.setBasePoint(P);
+v2 = new vector3d("v_2",10,5,3);
+v2.setStyleName("xAxis");
+
+ xAxis = new line(0.0);
+PP=new projectpoint("",v1,xAxis);
+
+v1.setStyleName("zAxis2");
+v3.setStyleName("zAxis2");
+a = new axis();
+
+m1 = new measurement("",[0,0],v1);
+m1.setLabel("\orange{magnitude}");
+m2 = new measurement("\orange{magnitude}",P,P+v3);
+m2.setLabel("\orange{magnitude}");
+
+mx = new measurement("mx",[0,0],PP);
+mx.setLabel("\red{x component}" );
+mx.setDistance(-1.0);
+mx.setDrawSegment(true);
+
+my = new measurement("my",PP,v1);
+my.setLabel("\green{y component}");
+my.setDistance(-1.0);
+my.setDrawSegment(true);
+\end{script}
+
+A vector is typically presented as a row of values in a specific \b{order}. A notation for a \b{2D vector} where \b{x} equals 10 and \b{y} equals 5 is for example: \\
+
+{$v1} =  {#v1} \\ \\
+
+
+For a \b{3D} vector the same notation is followed: \\ 
+
+{$v2} =  {#v2}
+
+\\ \\
+\begin{p}{boxStyle=boxRed}
+A vector can only be \b{rotated} and \b{scaled}! This has consequences for matrix transformations (see further).
+\end{p}
+
+
+\begin{rightcolumn}
+\section{Graphical presentation}
+
+
+\begin{picture}
+\width{640}
+\extents{-1,-2,12,10}
+\begin{part}
+\begin{text}
+A \red{vector} models a \blue{direction} and a \orange{magnitude}.\\
+A vector is always drawn as a line segment with an arrowhead that indicates its \blue{direction}.\\
+\end{text}
+\include{v1,a,mx,my}
+\end{part}
+
+\begin{part}
+\begin{text}
+The length of this line segment equals the \orange{magnitude} of the vector.
+\end{text}
+\include{m1}
+\end{part}
+
+\begin{part}
+\begin{text}
+Two vector with same direction (meaning the same \red{x}, \green{y} and \blue{z} components) 
+are the \red{same} vector.
+\end{text}
+\include{v3,m2}
+\end{part}
+
+\begin{part}
+\begin{text}
+\begin{enumerate}
+\item A car has a direction (vector) and a speed (magnitude).
+\item A light ray has a direction (vector) and a magnitude of 1.
+\end{enumerate}
+\end{text}
+\end{part}
+
+\end{picture}
+\end{rightcolumn}
+
+\end{document}

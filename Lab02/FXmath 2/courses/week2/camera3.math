@@ -1,0 +1,38 @@
+\begin{document}
+\title{Camera ONB - Pitch Yaw camera}
+\chapter{Camera ONB - Pitch Yaw camera}
+\subsection{Matrix multiplication}
+\\It is possible to create a camera ONB as a multiplication of 
+two transformation matrices, namely a pitch and a yaw rotation transformation.
+\\ \\
+It is important to understand what both rotations are doing:
+
+\begin{enumerate}
+\item The \red{pitch} rotation (over the X-axis) controls the up and down direction of the camera, 
+in other words, changes this value means you are looking up or down.
+\item The \green{yaw} rotation (over the Y-axis) controls the left and right direction of
+ the camera. 
+\end{enumerate}
+
+
+\begin{p}{boxStyle=boxRed}
+\b{Note}: We typically want to change the direction vector of the camera which is determined by the Z-direction. 
+In other words, you need to verify that the pitch and yaw rotations point the unit z-vector to whatever you want
+ to actually look at. In a left handed camera system we point the \b{positive} unit z-vector at what we want to look at.
+\end{p}
+
+\begin{p}{boxStyle=boxGreen}
+\b{Exercise}: setup the camera ONB by multiplying a pitch and a yaw rotation. Think about the
+ correct order, if you know that the right vector of the camera has
+ to stay on the YZ-plane (in other words, the camera should not
+ be tilted).
+\end{p}
+
+\begin{rightcolumn}
+\subsection{Reference}
+\url{https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dxmatrixlookatlh}
+\end{rightcolumn}
+
+
+
+\end{document}
