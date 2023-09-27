@@ -34,8 +34,9 @@ void Renderer::Render(Scene* pScene) const
 		{
 			Vector3 rayDirection{};
 			float cx{}, cy{}, aspectRatio{ static_cast<float>(m_Width) / static_cast<float> (m_Height) };
-			cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio;
-			cy = 1 - 2 * (py + 0.5f) / m_Height;
+			
+			cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
+			cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
 			rayDirection = Vector3{ cx, cy ,1 };
 			rayDirection.Normalize();
 			Ray hitRay{ camera.origin, rayDirection };

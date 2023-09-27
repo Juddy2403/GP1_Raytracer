@@ -20,7 +20,8 @@ namespace dae
 
 
 		Vector3 origin{};
-		float fovAngle{90.f};
+		float fovAngle{ 90.f };
+		float fovFactor{ 1.f };
 
 		Vector3 forward{Vector3::UnitZ};
 		Vector3 up{Vector3::UnitY};
@@ -31,6 +32,11 @@ namespace dae
 
 		Matrix cameraToWorld{};
 
+		void UpdateFOV(float fovValue)
+		{
+			fovAngle = fovValue;
+			fovFactor = tan(fovValue / 2);
+		}
 
 		Matrix CalculateCameraToWorld()
 		{

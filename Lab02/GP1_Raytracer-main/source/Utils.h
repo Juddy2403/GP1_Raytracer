@@ -16,7 +16,7 @@ namespace dae
 			const Vector3 rayToSphereDist{ sphere.origin - ray.origin };
 
 			const float tCa{ Vector3::Dot(rayToSphereDist, ray.direction) };
-			//if (tCa < 0) return false; //may cause problems?
+			if (tCa < 0) return false; //may cause problems?
 
 			const float od{ (rayToSphereDist - tCa * ray.direction).Magnitude() };
 			if (od >= sphere.radius) return false;
@@ -27,7 +27,7 @@ namespace dae
 
 			if (!ignoreHitRecord)
 			{
-				const Vector3 intersectRay{ ray.origin + tZero * ray.direction };
+				const Vector3 intersectRay{ sphere.origin,ray.origin + tZero * ray.direction };
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = sphere.materialIndex;
 				hitRecord.normal = intersectRay.Normalized();
