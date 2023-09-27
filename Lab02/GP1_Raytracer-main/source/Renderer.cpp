@@ -43,7 +43,7 @@ void Renderer::Render(Scene* pScene) const
 			cy = 1 - 2 * (py + 0.5f) / m_Height;
 			rayDirection = Vector3{ cx, cy ,1 };
 			rayDirection.Normalize();
-			Ray hitRay{ {0,0,0}, rayDirection };
+			Ray hitRay{ camera.origin, rayDirection };
 			
 			ColorRGB finalColor{};
 			HitRecord closestHit{};
