@@ -31,26 +31,34 @@ namespace dae {
 	{
 		//todo W1
 		//assert(false && "No Implemented Yet!");
-		for (const Sphere& sphere : m_SphereGeometries)
-		{
-			HitRecord hitRecord{};
-			GeometryUtils::HitTest_Sphere(sphere, ray, hitRecord);
-			if (hitRecord.t < closestHit.t)
-				closestHit = hitRecord;
-		}
+		HitRecord hitRecord{};
 		for (const Plane& plane : m_PlaneGeometries)
 		{
-			HitRecord hitRecord{};
 			GeometryUtils::HitTest_Plane(plane, ray, hitRecord);
 			if (hitRecord.t < closestHit.t)
 				closestHit = hitRecord;
 		}
+		for (const Sphere& sphere : m_SphereGeometries)
+		{
+			GeometryUtils::HitTest_Sphere(sphere, ray, hitRecord);
+			if (hitRecord.t < closestHit.t)
+				closestHit = hitRecord;
+		}
+		
 	}
 
 	bool Scene::DoesHit(const Ray& ray) const
 	{
 		//todo W3
-		assert(false && "No Implemented Yet!");
+		//assert(false && "No Implemented Yet!");
+		for (const Sphere& sphere : m_SphereGeometries)
+		{
+			if (GeometryUtils::HitTest_Sphere(sphere, ray)) return true;
+		}
+		for (const Plane& plane : m_PlaneGeometries)
+		{
+			if(GeometryUtils::HitTest_Plane(plane, ray)) return true;
+		}
 		return false;
 	}
 

@@ -26,11 +26,11 @@ namespace dae
 
 			if (!ignoreHitRecord)
 			{
-				const Vector3 intersectRay{ sphere.origin,ray.origin + tZero * ray.direction };
+				const Vector3 intersectPoint{ray.origin + tZero * ray.direction };
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = sphere.materialIndex;
-				hitRecord.normal = intersectRay.Normalized();
-				hitRecord.origin = ray.origin + tZero * ray.direction;
+				hitRecord.origin = intersectPoint;
+				hitRecord.normal = (sphere.origin,intersectPoint).Normalized();
 				hitRecord.t = tZero;
 			}
 
@@ -49,18 +49,18 @@ namespace dae
 		{
 			//todo W1
 			//assert(false && "No Implemented Yet!")
-			float denominator{ Vector3::Dot(ray.direction,plane.normal) };
-			float t{ Vector3::Dot(plane.origin - ray.origin,plane.normal) / denominator };
+			const float denominator{ Vector3::Dot(ray.direction,plane.normal) };
+			const float t{ Vector3::Dot(plane.origin - ray.origin,plane.normal) / denominator };
 			if (t< ray.min || t> ray.max) return false;
-			Vector3 intersectRay{ ray.origin + t * ray.direction };
-
+			
 			if (!ignoreHitRecord)
 			{
+				const Vector3 intersectPoint{ ray.origin + t * ray.direction };
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = plane.materialIndex;
 				hitRecord.t = t;
-				hitRecord.origin = intersectRay;
-				hitRecord.normal = intersectRay.Normalized();
+				hitRecord.origin = intersectPoint;
+				hitRecord.normal = (intersectPoint, ray.origin).Normalized();
 			}
 			return true;
 		}
@@ -108,8 +108,8 @@ namespace dae
 		inline Vector3 GetDirectionToLight(const Light& light, const Vector3 origin)
 		{
 			//todo W3
-			assert(false && "No Implemented Yet!");
-			return {};
+			//assert(false && "No Implemented Yet!");
+			return {origin,light.origin};
 		}
 
 		inline ColorRGB GetRadiance(const Light& light, const Vector3& target)

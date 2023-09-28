@@ -51,6 +51,18 @@ void Renderer::Render(Scene* pScene) const
 			if (closestHit.didHit)
 			{		
 				finalColor = materials[closestHit.materialIndex]->Shade();
+				for (const Light& light : lights)
+				{
+					Ray lightRay{ };
+					const Vector3 lightRayOrigin{ closestHit.origin + 0.001f * closestHit.normal };
+					Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayOrigin) };
+					lightRay.max = lightRayDir.Normalize();
+					lightRay.min = 0.0001f;
+					lightRay.direction = lightRayDir;
+					lightRay.origin = lightRayOrigin;
+
+					if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
+				}
 			}
 		
 
