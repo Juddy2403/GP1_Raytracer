@@ -16,12 +16,11 @@ namespace dae
 			const Vector3 rayToSphereDist{ sphere.origin - ray.origin };
 
 			const float tCa{ Vector3::Dot(rayToSphereDist, ray.direction) };
-			if (tCa < 0) return false; //may cause problems?
 
-			const float od{ (rayToSphereDist - tCa * ray.direction).Magnitude() };
-			if (od >= sphere.radius) return false;
+			const float od{ (rayToSphereDist - tCa * ray.direction).SqrMagnitude() };
+			if (od >= sphere.radius* sphere.radius) return false;
 
-			const float tHc{ sqrt(sphere.radius * sphere.radius - od * od) };
+			const float tHc{ sqrt(sphere.radius * sphere.radius - od) };
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
 			if (tZero < ray.min || tZero > ray.max) return false;
 
@@ -31,7 +30,7 @@ namespace dae
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = sphere.materialIndex;
 				hitRecord.normal = intersectRay.Normalized();
-				hitRecord.origin = intersectRay;
+				hitRecord.origin = ray.origin + tZero * ray.direction;
 				hitRecord.t = tZero;
 			}
 
@@ -50,7 +49,8 @@ namespace dae
 		{
 			//todo W1
 			//assert(false && "No Implemented Yet!")
-			float t{ Vector3::Dot(plane.origin - ray.origin,plane.normal) / Vector3::Dot(ray.direction,plane.normal) };
+			float denominator{ Vector3::Dot(ray.direction,plane.normal) };
+			float t{ Vector3::Dot(plane.origin - ray.origin,plane.normal) / denominator };
 			if (t< ray.min || t> ray.max) return false;
 			Vector3 intersectRay{ ray.origin + t * ray.direction };
 

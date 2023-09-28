@@ -37,7 +37,10 @@ void Renderer::Render(Scene* pScene) const
 			
 			cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
 			cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
+
 			rayDirection = Vector3{ cx, cy ,1 };
+			rayDirection = camera.CalculateCameraToWorld().TransformVector(rayDirection);
+
 			rayDirection.Normalize();
 			Ray hitRay{ camera.origin, rayDirection };
 			

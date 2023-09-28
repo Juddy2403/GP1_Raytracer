@@ -5,6 +5,7 @@
 
 #include "Math.h"
 #include "Timer.h"
+#include "iostream"
 
 namespace dae
 {
@@ -18,12 +19,11 @@ namespace dae
 		{
 		}
 
-
 		Vector3 origin{};
 		float fovAngle{ 90.f };
 		float fovFactor{ 1.f };
 
-		Vector3 forward{Vector3::UnitZ};
+		Vector3 forward{ Vector3::UnitZ }; //0.266f,-0.453f,0.860f //Vector3::UnitZ
 		Vector3 up{Vector3::UnitY};
 		Vector3 right{Vector3::UnitX};
 
@@ -35,14 +35,29 @@ namespace dae
 		void UpdateFOV(float fovValue)
 		{
 			fovAngle = fovValue;
-			fovFactor = tan(fovValue / 2);
+			fovFactor = tan(TO_RADIANS * fovValue / 2.f);
 		}
 
 		Matrix CalculateCameraToWorld()
 		{
 			//todo: W2
-			assert(false && "Not Implemented Yet");
-			return {};
+			//assert(false && "Not Implemented Yet"); 
+			//ONBRotation.TransformVector(forward);
+			//forward.Normalize();
+			right = Vector3::Cross(Vector3::UnitY, forward).Normalized();
+			up = Vector3::Cross(forward, right).Normalized();
+			//totalPitch = acosf(Vector3::Dot(forward, Vector3::UnitX));
+			//totalYaw = acosf(Vector3::Dot(forward, Vector3::UnitY));
+			//Matrix pitchYawRot{ Matrix::CreateRotationX(totalPitch)* 
+			//	Matrix::CreateRotationY(totalYaw) };
+			//Matrix ONB{ Matrix::CreateTranslation(origin) * pitchYawRot };
+			return {
+				Vector4 {right, 0},
+				Vector4 {up, 0},
+				Vector4 {forward, 0},
+				Vector4 {origin, 1}
+			};
+			//return ONB;
 		}
 
 		void Update(Timer* pTimer)
@@ -59,6 +74,26 @@ namespace dae
 
 			//todo: W2
 			//assert(false && "Not Implemented Yet");
+			const float movementSpeed{ 5.f }, rotationSpeed{ 1.f };
+			
+			if (pKeyboardState[SDL_SCANCODE_W]) origin += (movementSpeed * deltaTime) * forward;
+			if (pKeyboardState[SDL_SCANCODE_S]) origin -= (movementSpeed * deltaTime) * forward;
+			if (pKeyboardState[SDL_SCANCODE_A]) origin -= (movementSpeed * deltaTime) * right;
+			if (pKeyboardState[SDL_SCANCODE_D]) origin += (movementSpeed * deltaTime) * right;
+
+			if (mouseState == 4 && (mouseX || mouseY))
+			{
+				Matrix finalRotation{};
+
+				totalPitch += mouseY * rotationSpeed * deltaTime;
+				finalRotation = Matrix::CreateRotationX(totalPitch);
+
+				totalYaw += mouseX * rotationSpeed * deltaTime;
+				finalRotation *= Matrix::CreateRotationY(totalYaw);
+				forward = finalRotation.TransformVector(Vector3::UnitZ);
+				forward.Normalize();
+
+			}
 		}
 	};
 }

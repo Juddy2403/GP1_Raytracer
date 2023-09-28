@@ -10,8 +10,8 @@
 \include{matrix5b.math}
 \include{matrix6.math}
 \include{matrix7.math}
-\include{matrix8.math}
 \include{matrix9.math}
+\include{matrix8.math}
 \include{camera1.math}
 \include{camera2.math}
 \include{camera2b.math}
