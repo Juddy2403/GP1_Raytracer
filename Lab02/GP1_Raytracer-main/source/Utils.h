@@ -17,10 +17,13 @@ namespace dae
 
 			const float tCa{ Vector3::Dot(rayToSphereDist, ray.direction) };
 
-			const float od{ (rayToSphereDist - tCa * ray.direction).SqrMagnitude() };
-			if (od >= sphere.radius* sphere.radius) return false;
+			const float squaredRadius{ sphere.radius * sphere.radius };
 
-			const float tHc{ sqrt(sphere.radius * sphere.radius - od) };
+			const float od{ (rayToSphereDist - tCa * ray.direction).SqrMagnitude() };
+			if (od >= squaredRadius) return false;
+			
+			const float tHc{ sqrt(squaredRadius - od) };
+
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
 			if (tZero < ray.min || tZero > ray.max) return false;
 
@@ -109,7 +112,7 @@ namespace dae
 		{
 			//todo W3
 			//assert(false && "No Implemented Yet!");
-			return {origin,light.origin};
+			return {light.origin - origin};
 		}
 
 		inline ColorRGB GetRadiance(const Light& light, const Vector3& target)

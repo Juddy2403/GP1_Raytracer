@@ -27,16 +27,17 @@ void Renderer::Render(Scene* pScene) const
 	Camera& camera = pScene->GetCamera();
 	auto& materials = pScene->GetMaterials();
 	auto& lights = pScene->GetLights();
+	const float aspectRatio{ float(m_Width) / (m_Height) };
 
+	float cx{}, cy{};
 	for (int px{}; px < m_Width; ++px)
 	{
+		cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
 		for (int py{}; py < m_Height; ++py)
 		{
 			Vector3 rayDirection{};
-			float cx{}, cy{}, aspectRatio{ static_cast<float>(m_Width) / static_cast<float> (m_Height) };
-			
-			cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
-			cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
+			if (py != 0) cy++;
+			else cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
 
 			rayDirection = Vector3{ cx, cy ,1 };
 			rayDirection = camera.CalculateCameraToWorld().TransformVector(rayDirection);
@@ -54,7 +55,7 @@ void Renderer::Render(Scene* pScene) const
 				for (const Light& light : lights)
 				{
 					Ray lightRay{ };
-					const Vector3 lightRayOrigin{ closestHit.origin + 0.0001f * closestHit.normal };
+					const Vector3 lightRayOrigin{ closestHit.origin + 0.00001f * closestHit.normal };
 					Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayOrigin) };
 					lightRay.max = lightRayDir.Normalize();
 					lightRay.min = 0.0001f;
