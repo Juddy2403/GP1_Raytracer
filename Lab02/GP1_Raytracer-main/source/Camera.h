@@ -22,7 +22,6 @@ namespace dae
 		Vector3 origin{};
 		float fovAngle{ 90.f };
 		float fovFactor{ 1.f };
-		bool isMoving{ true };
 
 		Vector3 forward{ Vector3::UnitZ }; //0.266f,-0.453f,0.860f //Vector3::UnitZ
 		Vector3 up{Vector3::UnitY};
@@ -87,10 +86,8 @@ namespace dae
 				finalRotation *= Matrix::CreateRotationY(totalYaw);
 				forward = finalRotation.TransformVector(Vector3::UnitZ);
 				forward.Normalize();
-				isMoving = true;
 
 			}
-			else isMoving = false;
 		}
 	};
 }

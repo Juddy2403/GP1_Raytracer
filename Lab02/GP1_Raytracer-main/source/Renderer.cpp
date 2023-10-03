@@ -29,7 +29,6 @@ void Renderer::Render(Scene* pScene) const
 	auto& lights = pScene->GetLights();
 	const float aspectRatio{ float(m_Width) / (m_Height) };
 	Matrix cameraToWorld{ camera.CalculateCameraToWorld() };
-	//if (camera.isMoving) cameraToWorld = { camera.CalculateCameraToWorld() };
 
 	float cx{}, cy{};
 	for (int px{}; px < m_Width; ++px)
@@ -63,7 +62,7 @@ void Renderer::Render(Scene* pScene) const
 					lightRay.direction = lightRayDir;
 					lightRay.origin = lightRayOrigin;
 
-					if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
+					//if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
 				}
 			}
 		
