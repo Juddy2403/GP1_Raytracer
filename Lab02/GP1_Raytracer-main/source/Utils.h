@@ -13,18 +13,19 @@ namespace dae
 		inline bool HitTest_Sphere(const Sphere& sphere, const Ray& ray, HitRecord& hitRecord, bool ignoreHitRecord = false)
 		{
 			//todo W1
-			const Vector3 rayToSphereDist{ sphere.origin - ray.origin };
+			const Vector3 rayToSphere{ sphere.origin - ray.origin };
 
-			const float tCa{ Vector3::Dot(rayToSphereDist, ray.direction) };
+			const float tCa{ Vector3::Dot(rayToSphere, ray.direction) };
 
 			const float squaredRadius{ sphere.radius * sphere.radius };
 
-			const float od{ (rayToSphereDist - tCa * ray.direction).SqrMagnitude() };
+			const float od{ (rayToSphere.SqrMagnitude() - tCa * tCa)};
 			if (od >= squaredRadius) return false;
-			
+			//TODO: calculte sphere squared in sphere class
 			const float tHc{ sqrt(squaredRadius - od) };
 
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
+
 			if (tZero < ray.min || tZero > ray.max) return false;
 
 			if (!ignoreHitRecord)
@@ -33,7 +34,7 @@ namespace dae
 				hitRecord.didHit = true;
 				hitRecord.materialIndex = sphere.materialIndex;
 				hitRecord.origin = intersectPoint;
-				hitRecord.normal = (sphere.origin,intersectPoint).Normalized();
+				hitRecord.normal = (intersectPoint - sphere.origin).Normalized();
 				hitRecord.t = tZero;
 			}
 

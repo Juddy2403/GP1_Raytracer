@@ -29,7 +29,7 @@ namespace dae
 
 		SDL_Surface* m_pBuffer{};
 		uint32_t* m_pBufferPixels{};
-
+		std::vector<uint32_t> m_ImageHorizontalIterator, m_ImageVerticalIterator;
 		int m_Width{};
 		int m_Height{};
 	};
