@@ -28,6 +28,8 @@ void Renderer::Render(Scene* pScene) const
 	auto& materials = pScene->GetMaterials();
 	auto& lights = pScene->GetLights();
 	const float aspectRatio{ float(m_Width) / (m_Height) };
+	Matrix cameraToWorld{ camera.CalculateCameraToWorld() };
+	//if (camera.isMoving) cameraToWorld = { camera.CalculateCameraToWorld() };
 
 	float cx{}, cy{};
 	for (int px{}; px < m_Width; ++px)
@@ -36,11 +38,10 @@ void Renderer::Render(Scene* pScene) const
 		for (int py{}; py < m_Height; ++py)
 		{
 			Vector3 rayDirection{};
-			if (py != 0) cy++;
-			else cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
+			cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
 
 			rayDirection = Vector3{ cx, cy ,1 };
-			rayDirection = camera.CalculateCameraToWorld().TransformVector(rayDirection);
+			rayDirection = cameraToWorld.TransformVector(rayDirection);
 
 			rayDirection.Normalize();
 			Ray hitRay{ camera.origin, rayDirection };
