@@ -1,6 +1,0 @@
-\begin{document}
-\title{The start project}
-\section{The start project}
-\subsection{Using VSCode and CMake}
-\includegraphics[scale=0.5]{images/vscode.png}
-\end{document}
