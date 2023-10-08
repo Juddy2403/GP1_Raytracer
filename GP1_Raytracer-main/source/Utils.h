@@ -64,7 +64,7 @@ namespace dae
 				hitRecord.materialIndex = plane.materialIndex;
 				hitRecord.t = t;
 				hitRecord.origin = intersectPoint;
-				hitRecord.normal = (intersectPoint, ray.origin).Normalized();
+				hitRecord.normal = plane.normal;
 			}
 			return true;
 		}
@@ -113,7 +113,7 @@ namespace dae
 		{
 			//todo W3
 			//assert(false && "No Implemented Yet!");
-			return {light.origin - origin};
+			return Vector3{light.origin - origin};
 		}
 
 		inline ColorRGB GetRadiance(const Light& light, const Vector3& target)
@@ -122,7 +122,7 @@ namespace dae
 			//assert(false && "No Implemented Yet!");
 			if(light.type == LightType::Point)
 			{
-				Vector3 dist{ light.origin - target };
+				Vector3 dist{ target - light.origin };
 				//irradiance
 				const ColorRGB Ergb{ light.color * (light.intensity / dist.SqrMagnitude()) };
 				return Ergb;
@@ -130,8 +130,8 @@ namespace dae
 			else
 			{
 				const ColorRGB Ergb{light.color * light.intensity};
+				return Ergb;
 			}
-			return {};
 		}
 	}
 

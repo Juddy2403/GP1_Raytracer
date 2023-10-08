@@ -66,15 +66,19 @@ void Renderer::Render(Scene* pScene) const
 						//finalColor = materials[closestHit.materialIndex]->Shade();
 						for (const Light& light : lights)
 						{
-							Ray lightRay{ };
-							const Vector3 lightRayOrigin{ closestHit.origin + 0.00001f * closestHit.normal };
-							Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayOrigin) };
+							
+							const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
+							Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
+							Ray lightRay{};
 							lightRay.max = lightRayDir.Normalize();
 							lightRay.min = 0.0001f;
 							lightRay.direction = lightRayDir;
-							lightRay.origin = lightRayOrigin;
+							lightRay.origin = lightRayIntersectPoint;
 							//calculate incident radiance
-							if (pScene->DoesHit(lightRay)) finalColor += LightUtils::GetRadiance(light, closestHit.normal);
+							//if (pScene->DoesHit(lightRay)) 
+							const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
+							if (lightDirCos >= 0)
+							finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos;
 							//if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
 						}
 					}
@@ -100,17 +104,14 @@ void Renderer::Render(Scene* pScene) const
 	//	{
 	//		Vector3 rayDirection{};
 	//		cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
-
 	//		rayDirection = Vector3{ cx, cy ,1 };
 	//		rayDirection = cameraToWorld.TransformVector(rayDirection);
-
 	//		rayDirection.Normalize();
 	//		Ray hitRay{ camera.origin, rayDirection };
 	//		
 	//		ColorRGB finalColor{};
 	//		HitRecord closestHit{};
 	//		pScene->GetClosestHit(hitRay, closestHit);
-
 	//		if (closestHit.didHit)
 	//		{		
 	//			finalColor = materials[closestHit.materialIndex]->Shade();
@@ -123,22 +124,18 @@ void Renderer::Render(Scene* pScene) const
 	//				lightRay.min = 0.0001f;
 	//				lightRay.direction = lightRayDir;
 	//				lightRay.origin = lightRayOrigin;
-
 	//				if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
 	//			}
 	//		}
 	//	
-
 	//		//Update Color in Buffer
 	//		finalColor.MaxToOne();
-
 	//		m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
 	//			static_cast<uint8_t>(finalColor.r * 255),
 	//			static_cast<uint8_t>(finalColor.g * 255),
 	//			static_cast<uint8_t>(finalColor.b * 255));
 	//	}
 	//}
-
 	//@END
 	//Update SDL Surface
 	//SDL_UpdateWindowSurface(m_pWindow);
