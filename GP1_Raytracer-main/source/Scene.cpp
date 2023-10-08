@@ -7,8 +7,8 @@ namespace dae {
 
 #pragma region Base Scene
 	//Initialize Scene with Default Solid Color Material (RED)
-	Scene::Scene():
-		m_Materials({ new Material_SolidColor({1,0,0})})
+	Scene::Scene() :
+		m_Materials({ new Material_SolidColor({1,0,0}) })
 	{
 		m_SphereGeometries.reserve(32);
 		m_PlaneGeometries.reserve(32);
@@ -18,7 +18,7 @@ namespace dae {
 
 	Scene::~Scene()
 	{
-		for(auto& pMaterial : m_Materials)
+		for (auto& pMaterial : m_Materials)
 		{
 			delete pMaterial;
 			pMaterial = nullptr;
@@ -44,7 +44,7 @@ namespace dae {
 			if (hitRecord.t < closestHit.t)
 				closestHit = hitRecord;
 		}
-		
+
 	}
 
 	bool Scene::DoesHit(const Ray& ray) const
@@ -57,7 +57,7 @@ namespace dae {
 		}
 		for (const Plane& plane : m_PlaneGeometries)
 		{
-			if(GeometryUtils::HitTest_Plane(plane, ray)) return true;
+			if (GeometryUtils::HitTest_Plane(plane, ray)) return true;
 		}
 		return false;
 	}
@@ -130,7 +130,7 @@ namespace dae {
 #pragma region SCENE W1
 	void Scene_W1::Initialize()
 	{
-				//default: Material id0 >> SolidColor Material (RED)
+		//default: Material id0 >> SolidColor Material (RED)
 		constexpr unsigned char matId_Solid_Red = 0;
 		const unsigned char matId_Solid_Blue = AddMaterial(new Material_SolidColor{ colors::Blue });
 
@@ -149,14 +149,14 @@ namespace dae {
 		AddPlane({ 0.f, 75.f, 0.f }, { 0.f, -1.f,0.f }, matId_Solid_Yellow);
 		AddPlane({ 0.f, 0.f, 125.f }, { 0.f, 0.f,-1.f }, matId_Solid_Magenta);
 
-	/*	float dotResult{};
-		dotResult = Vector3::Dot(Vector3::UnitX, Vector3::UnitX);
-		dotResult = Vector3::Dot(Vector3::UnitX, -Vector3::UnitX);
-		dotResult = Vector3::Dot(Vector3::UnitX, Vector3::UnitY);
+		/*	float dotResult{};
+			dotResult = Vector3::Dot(Vector3::UnitX, Vector3::UnitX);
+			dotResult = Vector3::Dot(Vector3::UnitX, -Vector3::UnitX);
+			dotResult = Vector3::Dot(Vector3::UnitX, Vector3::UnitY);
 
-		Vector3 crossResult{};
-		crossResult = Vector3::Cross(Vector3::UnitZ, Vector3::UnitX);
-		crossResult = Vector3::Cross(Vector3::UnitX, Vector3::UnitZ);*/
+			Vector3 crossResult{};
+			crossResult = Vector3::Cross(Vector3::UnitZ, Vector3::UnitX);
+			crossResult = Vector3::Cross(Vector3::UnitX, Vector3::UnitZ);*/
 	}
 #pragma endregion
 
@@ -201,9 +201,9 @@ namespace dae {
 		m_Camera.fovAngle = 45.f;
 
 		//default: Material id0 >> SolidColor Material (RED)
-		constexpr unsigned char matId_Solid_Red = 0;
-		const unsigned char matId_Solid_Blue = AddMaterial(new Material_SolidColor{ colors::Blue });
-		const unsigned char matId_Solid_Yellow = AddMaterial(new Material_SolidColor{ colors::Yellow });
+		const auto matId_Solid_Red = AddMaterial(new Material_Lambert(colors::Red, 1.f));
+		const auto matId_Solid_Blue = AddMaterial(new Material_Lambert{ colors::Blue ,1.f });
+		const auto matId_Solid_Yellow = AddMaterial(new Material_Lambert{ colors::Yellow ,1.f });
 
 		//Spheres
 		AddSphere({ -.75f, 1.f, .0f }, 1.f, matId_Solid_Red);

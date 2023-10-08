@@ -66,26 +66,24 @@ void Renderer::Render(Scene* pScene) const
 						//finalColor = materials[closestHit.materialIndex]->Shade();
 						for (const Light& light : lights)
 						{
-							
 							const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
 							Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
-							Ray lightRay{};
-							lightRay.max = lightRayDir.Normalize();
-							lightRay.min = 0.0001f;
-							lightRay.direction = lightRayDir;
-							lightRay.origin = lightRayIntersectPoint;
-							//calculate incident radiance
-							//if (pScene->DoesHit(lightRay)) 
+							const float lightRayDist{ lightRayDir.Normalize() };
+							//Ray lightRay{};
+							const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.0001f, lightRayDist };
+							
 							const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
-							if (lightDirCos >= 0)
-							finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos;
-							//if (pScene->DoesHit(lightRay)) finalColor *= 0.5f;
+
+							if (lightDirCos >= 0 && !pScene->DoesHit(lightRay))
+							{
+								finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
+									* materials[closestHit.materialIndex]->Shade();
+							}
 						}
+						//Update Color in Buffer
+						finalColor.MaxToOne();
 					}
 
-
-					//Update Color in Buffer
-					finalColor.MaxToOne();
 
 					m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
 						static_cast<uint8_t>(finalColor.r * 255),
