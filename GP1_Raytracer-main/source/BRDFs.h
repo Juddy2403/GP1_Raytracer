@@ -57,7 +57,8 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return {};
+			const float dot{ Vector3::Dot(h,v) };
+			return { f0 + (colors::White - f0) * pow((1 - dot),5) };
 		}
 
 		/**
@@ -71,7 +72,10 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return {};
+			const float nhDot{ Vector3::Dot(n,h) };
+			const float aSrqr{ roughness * roughness };
+			const float denominator{ (nhDot * nhDot) * (aSrqr - 1) + 1 };
+			return {aSrqr/(float(M_PI)*denominator*denominator)};
 		}
 
 
@@ -85,8 +89,9 @@ namespace dae
 		static float GeometryFunction_SchlickGGX(const Vector3& n, const Vector3& v, float roughness)
 		{
 			//todo: W3
-			//assert(false && "Not Implemented Yet");
-			return {};
+			const float dot{ Vector3::Dot(n,v) };
+			const float k{ (roughness + 1) * (roughness + 1) / 8 };
+			return { dot / (dot * (1 - k) + k) };
 		}
 
 		/**
@@ -101,7 +106,8 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return {};
+
+			return GeometryFunction_SchlickGGX(n, v, roughness) * GeometryFunction_SchlickGGX(n, l, roughness);
 		}
 
 	}

@@ -34,7 +34,7 @@ namespace dae
 	class Material_SolidColor final : public Material
 	{
 	public:
-		Material_SolidColor(const ColorRGB& color): m_Color(color)
+		Material_SolidColor(const ColorRGB& color) : m_Color(color)
 		{
 		}
 
@@ -44,7 +44,7 @@ namespace dae
 		}
 
 	private:
-		ColorRGB m_Color{colors::White};
+		ColorRGB m_Color{ colors::White };
 	};
 #pragma endregion
 
@@ -55,18 +55,18 @@ namespace dae
 	{
 	public:
 		Material_Lambert(const ColorRGB& diffuseColor, float diffuseReflectance) :
-			m_DiffuseColor(diffuseColor), m_DiffuseReflectance(diffuseReflectance){}
+			m_DiffuseColor(diffuseColor), m_DiffuseReflectance(diffuseReflectance) {}
 
 		ColorRGB Shade(const HitRecord& hitRecord = {}, const Vector3& l = {}, const Vector3& v = {}) override
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return BRDF::Lambert(m_DiffuseReflectance,m_DiffuseColor);
+			return BRDF::Lambert(m_DiffuseReflectance, m_DiffuseColor);
 		}
 
 	private:
-		ColorRGB m_DiffuseColor{colors::White};
-		float m_DiffuseReflectance{1.f}; //kd
+		ColorRGB m_DiffuseColor{ colors::White };
+		float m_DiffuseReflectance{ 1.f }; //kd
 	};
 #pragma endregion
 
@@ -76,7 +76,7 @@ namespace dae
 	class Material_LambertPhong final : public Material
 	{
 	public:
-		Material_LambertPhong(const ColorRGB& diffuseColor, float kd, float ks, float phongExponent):
+		Material_LambertPhong(const ColorRGB& diffuseColor, float kd, float ks, float phongExponent) :
 			m_DiffuseColor(diffuseColor), m_DiffuseReflectance(kd), m_SpecularReflectance(ks),
 			m_PhongExponent(phongExponent)
 		{
@@ -86,16 +86,16 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			
-			return BRDF::Lambert(m_DiffuseReflectance,m_DiffuseColor) 
-				+ BRDF::Phong(m_SpecularReflectance, m_PhongExponent,l,-v,hitRecord.normal);
+
+			return BRDF::Lambert(m_DiffuseReflectance, m_DiffuseColor)
+				+ BRDF::Phong(m_SpecularReflectance, m_PhongExponent, l, -v, hitRecord.normal);
 		}
 
 	private:
-		ColorRGB m_DiffuseColor{colors::White};
-		float m_DiffuseReflectance{0.5f}; //kd
-		float m_SpecularReflectance{0.5f}; //ks
-		float m_PhongExponent{1.f}; //Phong Exponent
+		ColorRGB m_DiffuseColor{ colors::White };
+		float m_DiffuseReflectance{ 0.5f }; //kd
+		float m_SpecularReflectance{ 0.5f }; //ks
+		float m_PhongExponent{ 1.f }; //Phong Exponent
 	};
 #pragma endregion
 
@@ -104,7 +104,7 @@ namespace dae
 	class Material_CookTorrence final : public Material
 	{
 	public:
-		Material_CookTorrence(const ColorRGB& albedo, float metalness, float roughness):
+		Material_CookTorrence(const ColorRGB& albedo, float metalness, float roughness) :
 			m_Albedo(albedo), m_Metalness(metalness), m_Roughness(roughness)
 		{
 		}
@@ -112,14 +112,23 @@ namespace dae
 		ColorRGB Shade(const HitRecord& hitRecord = {}, const Vector3& l = {}, const Vector3& v = {}) override
 		{
 			//todo: W3
-			//assert(false && "Not Implemented Yet");
-			return {};
+			//check if you need -v or v
+			const ColorRGB f0{ (m_Metalness >= 0.999f) ? m_Albedo : ColorRGB(0.04f,0.04f,0.04f) };
+			const Vector3 h{ (v + l).Normalized() };
+			const ColorRGB fresnel{ BRDF::FresnelFunction_Schlick(h,v,f0) };
+			const float normDistribution{ BRDF::NormalDistribution_GGX(hitRecord.normal,h,m_Roughness) };
+			const float geometry{ BRDF::GeometryFunction_Smith(hitRecord.normal,v,l,m_Roughness) };
+			const ColorRGB specular{ fresnel * ((normDistribution * geometry) / (4 * Vector3::Dot(v,hitRecord.normal) * Vector3::Dot(l,hitRecord.normal))) };
+			const ColorRGB kd{ (m_Metalness >= 0.999f) ? colors::White - fresnel : colors::Black};
+			//it may not be f0 that i have to use
+			const ColorRGB diffuse{ BRDF::Lambert(kd,f0) };
+			return { diffuse + specular };
 		}
 
 	private:
-		ColorRGB m_Albedo{0.955f, 0.637f, 0.538f}; //Copper
-		float m_Metalness{1.0f};
-		float m_Roughness{0.1f}; // [1.0 > 0.0] >> [ROUGH > SMOOTH]
+		ColorRGB m_Albedo{ 0.955f, 0.637f, 0.538f }; //Copper
+		float m_Metalness{ 1.0f };
+		float m_Roughness{ 0.1f }; // [1.0 > 0.0] >> [ROUGH > SMOOTH]
 	};
 #pragma endregion
 }
