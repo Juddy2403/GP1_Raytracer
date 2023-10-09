@@ -38,7 +38,12 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return {};
+			if (exp == 0) return ks * colors::White;
+			const Vector3 reflect{ Vector3::Reflect(l,n)};
+			const float cos{ std::max(Vector3::Dot(reflect,v),0.f) };
+			if (exp == 1) return ks * cos * colors::White;
+			if (exp == 2) return ks * cos * cos * colors::White;
+			return { ks * powf(cos,exp) * colors::White };
 		}
 
 		/**

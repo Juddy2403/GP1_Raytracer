@@ -69,7 +69,7 @@ void Renderer::Render(Scene* pScene) const
 							const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
 							Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
 							const float lightRayDist{ lightRayDir.Normalize() };
-							//Ray lightRay{};
+							
 							const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.0001f, lightRayDist };
 							
 							const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };

@@ -204,17 +204,17 @@ namespace dae {
 		const auto matId_Solid_Red = AddMaterial(new Material_Lambert(colors::Red, 1.f));
 		const auto matId_Solid_Blue = AddMaterial(new Material_Lambert{ colors::Blue ,1.f });
 		const auto matId_Solid_Yellow = AddMaterial(new Material_Lambert{ colors::Yellow ,1.f });
-
+		const auto matLambertPhong_Blue = AddMaterial(new Material_LambertPhong(colors::Blue, 1.f, 2.f, 100.f));
 		//Spheres
 		AddSphere({ -.75f, 1.f, .0f }, 1.f, matId_Solid_Red);
-		AddSphere({ .75f, 1.f, .0f }, 1.f, matId_Solid_Blue);
+		AddSphere({ .75f, 1.f, .0f }, 1.f, matLambertPhong_Blue);
 
 		//Plane
 		AddPlane({ 0.f, 0.f, 0.f }, { 0.f, 1.f, 0.f }, matId_Solid_Yellow);
 
 		//Light
 		AddPointLight({ 0.f, 5.f, 5.f }, 25.f, colors::White);
-		AddPointLight({ 0.f, 2.5f,-5.f }, 25.f, colors::White);
+		AddPointLight({ 0.f, 5.5f,-5.f }, 100.f, colors::White);
 	}
 #pragma endregion
 
