@@ -62,7 +62,8 @@ void Renderer::Render(Scene* pScene) const
 					pScene->GetClosestHit(hitRay, closestHit);
 
 					if (closestHit.didHit)
-					{
+					{ //TODO : camera fucked up fix it
+
 						//finalColor = materials[closestHit.materialIndex]->Shade();
 						for (const Light& light : lights)
 						{
