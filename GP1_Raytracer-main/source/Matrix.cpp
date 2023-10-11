@@ -111,11 +111,11 @@ namespace dae {
 			Vector3{0,1,0} ,
 			Vector3{0,0,1} ,
 			Vector3{x,y,z} };
-	/*	return Matrix{
-			Vector4{1,0,0,x} ,
-			Vector4{0,1,0,y} ,
-			Vector4{0,0,1,z} ,
-			Vector4{0,0,0,1} };*/
+		/*	return Matrix{
+				Vector4{1,0,0,x} ,
+				Vector4{0,1,0,y} ,
+				Vector4{0,0,1,z} ,
+				Vector4{0,0,0,1} };*/
 	}
 
 	Matrix Matrix::CreateTranslation(const Vector3& t)
@@ -128,15 +128,15 @@ namespace dae {
 		//todo W2
 		//assert(false && "Not Implemented Yet");
 		return Matrix{
-			Vector3{1,0,0} ,
-			Vector3{0,cos(pitch),sin(pitch)} ,
-			Vector3{0,-sin(pitch),cos(pitch)} ,
-			Vector3{0,0,0} };
-	/*	return Matrix{
-			Vector4{1,0,0,3} ,
-			Vector4{0,cos(pitch),sin(pitch),0} ,
-			Vector4{0,-sin(pitch),cos(pitch),0} ,
-			Vector4{0,0,0,1} };*/
+			Vector4{1,0,0,0} ,
+			Vector4{0,cos(pitch),-sin(pitch),0} ,
+			Vector4{0,sin(pitch),cos(pitch),0} ,
+			Vector4{0,0,0,1} };
+		/*	return Matrix{
+				Vector4{1,0,0,3} ,
+				Vector4{0,cos(pitch),sin(pitch),0} ,
+				Vector4{0,-sin(pitch),cos(pitch),0} ,
+				Vector4{0,0,0,1} };*/
 	}
 
 	Matrix Matrix::CreateRotationY(float yaw)
@@ -144,10 +144,10 @@ namespace dae {
 		//todo W2
 		//assert(false && "Not Implemented Yet");
 		return Matrix{
-		Vector3{cos(yaw),0,-sin(yaw)} ,
-		Vector3{0,1,0} ,
-		Vector3{sin(yaw),0,cos(yaw)} ,
-		Vector3{0,0,0} };
+		Vector4{cos(yaw),0,-sin(yaw),0} ,
+		Vector4{0,1,0,0} ,
+		Vector4{sin(yaw),0,cos(yaw),0} ,
+		Vector4{0,0,0,1} };
 		//	return Matrix{
 		//Vector4{cos(yaw),0,sin(yaw),0} ,
 		//Vector4{0,1,0,3} ,
@@ -160,22 +160,22 @@ namespace dae {
 		//todo W2
 		//assert(false && "Not Implemented Yet");
 		return Matrix{
-		Vector3{cos(roll),sin(roll),0} ,
-		Vector3{-sin(roll),cos(roll),0} ,
-		Vector3{0,0,1} ,
-		Vector3{0,0,0} };
-	/*	return Matrix{
-		Vector4{cos(roll),-sin(roll),0,0} , 
-		Vector4{sin(roll),cos(roll),0,0} ,
-		Vector4{0,0,1,3} ,
-		Vector4{0,0,0,1} };*/
+		Vector4{cos(roll),sin(roll),0,0} ,
+		Vector4{-sin(roll),cos(roll),0,0} ,
+		Vector4{0,0,1,0} ,
+		Vector4{0,0,0,1} };
+		/*	return Matrix{
+			Vector4{cos(roll),-sin(roll),0,0} ,
+			Vector4{sin(roll),cos(roll),0,0} ,
+			Vector4{0,0,1,3} ,
+			Vector4{0,0,0,1} };*/
 	}
 
 	Matrix Matrix::CreateRotation(const Vector3& r)
 	{
 		//todo W2
 		//assert(false && "Not Implemented Yet");
-		return CreateRotationX(r.x)*CreateRotationY(r.y)*CreateRotationZ(r.z);
+		return CreateRotationX(r.z) * CreateRotationY(r.y) * CreateRotationZ(r.x);
 	}
 
 	Matrix Matrix::CreateRotation(float pitch, float yaw, float roll)
