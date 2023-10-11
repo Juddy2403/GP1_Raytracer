@@ -15,7 +15,10 @@
 
 using namespace dae;
 
-Renderer::Renderer(SDL_Window * pWindow) :
+bool Renderer::m_ShadowsEnabled = true;
+Renderer::LightingMode Renderer::m_CurrentLightMode = LightingMode::Combined;
+
+Renderer::Renderer(SDL_Window* pWindow) :
 	m_pWindow(pWindow),
 	m_pBuffer(SDL_GetWindowSurface(pWindow))
 {
@@ -40,106 +43,154 @@ void Renderer::Render(Scene* pScene) const
 	Matrix cameraToWorld{ camera.CalculateCameraToWorld() };
 	camera.UpdateFOV(45.f);
 
-	//std::for_each(std::execution::par, m_ImageVerticalIterator.begin(), m_ImageVerticalIterator.end(), [&](uint32_t py)
-	//	//[this, aspectRatio, camera, materials, lights, cameraToWorld, pScene]
-	//	{
-	//		float cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
-	//	
-	//		std::for_each(std::execution::par, m_ImageHorizontalIterator.begin(), m_ImageHorizontalIterator.end(), [&](uint32_t px)
-	//			//[this, aspectRatio, camera, materials, lights, cameraToWorld, pScene, cy, py]
-	//			{
-	//				Vector3 rayDirection{};
-	//				float cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
-	//				rayDirection = Vector3{ cx, cy ,1 };
-	//				rayDirection = cameraToWorld.TransformVector(rayDirection);
-	//				rayDirection.Normalize();
-	//				Ray hitRay{ camera.origin, rayDirection };
-	//				ColorRGB finalColor{};
-	//				HitRecord closestHit{};
-	//				pScene->GetClosestHit(hitRay, closestHit);
-	//				if (closestHit.didHit)
-	//				{ //TODO : camera fucked up fix it
-	//					//finalColor = materials[closestHit.materialIndex]->Shade();
-	//					for (const Light& light : lights)
-	//					{
-	//						const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
-	//						Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
-	//						const float lightRayDist{ lightRayDir.Normalize() };
-	//						
-	//						const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.0001f, lightRayDist };
-	//						
-	//						const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
-	//						if (lightDirCos >= 0 && !pScene->DoesHit(lightRay))
-	//						{
-	//							finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
-	//								* materials[closestHit.materialIndex]->Shade(closestHit,lightRayDir,-rayDirection);
-	//						}
-	//					}
-	//					//Update Color in Buffer
-	//					finalColor.MaxToOne();
-	//				}
-	//				m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
-	//					static_cast<uint8_t>(finalColor.r * 255),
-	//					static_cast<uint8_t>(finalColor.g * 255),
-	//					static_cast<uint8_t>(finalColor.b * 255));
-	//			});
-	//		
-	//	});
-	//SDL_UpdateWindowSurface(m_pWindow);
-	
-	float cx, cy;
-	for (int px{}; px < m_Width; ++px)
-	{
-		cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
-		for (int py{}; py < m_Height; ++py)
+	std::for_each(std::execution::par, m_ImageVerticalIterator.begin(), m_ImageVerticalIterator.end(), [&](uint32_t py)
+		//[this, aspectRatio, camera, materials, lights, cameraToWorld, pScene]
 		{
-			Vector3 rayDirection{};
-			cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
-			rayDirection = Vector3{ cx, cy ,1 };
-			rayDirection = cameraToWorld.TransformVector(rayDirection);
-
-			rayDirection.Normalize();
-			Ray hitRay{ camera.origin, rayDirection };
-
-			ColorRGB finalColor{};
-			HitRecord closestHit{};
-			pScene->GetClosestHit(hitRay, closestHit);
-
-			if (closestHit.didHit)
-			{ //TODO : camera fucked up fix it
-
-				//finalColor = materials[closestHit.materialIndex]->Shade();
-				for (const Light& light : lights)
+			float cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
+		
+			std::for_each(std::execution::par, m_ImageHorizontalIterator.begin(), m_ImageHorizontalIterator.end(), [&](uint32_t px)
+				//[this, aspectRatio, camera, materials, lights, cameraToWorld, pScene, cy, py]
 				{
-					const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
-					Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
-					const float lightRayDist{ lightRayDir.Normalize() };
-
-					const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.0001f, lightRayDist };
-
-					const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
-
-					if (lightDirCos >= 0 && !pScene->DoesHit(lightRay))
+					Vector3 rayDirection{};
+					float cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
+					rayDirection = Vector3{ cx, cy ,1 };
+					rayDirection = cameraToWorld.TransformVector(rayDirection);
+					rayDirection.Normalize();
+					Ray hitRay{ camera.origin, rayDirection };
+					ColorRGB finalColor{};
+					HitRecord closestHit{};
+					pScene->GetClosestHit(hitRay, closestHit);
+					if (closestHit.didHit)
 					{
-						finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
-							* materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+
+						for (const Light& light : lights)
+						{
+							const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
+							Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
+							const float lightRayDist{ lightRayDir.Normalize() };
+
+							const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.001f, lightRayDist };
+
+							const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
+
+							if (!pScene->DoesHit(lightRay) || !m_ShadowsEnabled)
+							{
+								switch (m_CurrentLightMode)
+								{
+								case LightingMode::Combined:
+									if (lightDirCos >= 0)
+										finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
+										* materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+									break;
+								case LightingMode::ObservedArea:
+									if (lightDirCos >= 0)
+										finalColor += lightDirCos * ColorRGB{1, 1, 1};
+									break;
+								case LightingMode::Radiance:
+									finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint);
+									break;
+								case LightingMode::BRDF:
+									if (lightDirCos >= 0)
+										finalColor += materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+									break;
+								}
+							}
+
+						}
+						//Update Color in Buffer
+						finalColor.MaxToOne();
 					}
-				}
-				//Update Color in Buffer
-				finalColor.MaxToOne();
-			}
-			m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
-				static_cast<uint8_t>(finalColor.r * 255),
-				static_cast<uint8_t>(finalColor.g * 255),
-				static_cast<uint8_t>(finalColor.b * 255));
-		}
-	}
-	//@END
-	//Update SDL Surface
+					m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
+						static_cast<uint8_t>(finalColor.r * 255),
+						static_cast<uint8_t>(finalColor.g * 255),
+						static_cast<uint8_t>(finalColor.b * 255));
+				});
+			
+		});
 	SDL_UpdateWindowSurface(m_pWindow);
+
+#pragma region oldFor
+	//float cx, cy;
+	//for (int px{}; px < m_Width; ++px)
+	//{
+	//	cx = (2.f * (px + 0.5f) / m_Width - 1.f) * aspectRatio * camera.fovFactor;
+	//	for (int py{}; py < m_Height; ++py)
+	//	{
+	//		Vector3 rayDirection{};
+	//		cy = (1 - 2 * (py + 0.5f) / m_Height) * camera.fovFactor;
+	//		rayDirection = Vector3{ cx, cy ,1 };
+	//		rayDirection = cameraToWorld.TransformVector(rayDirection);
+
+	//		rayDirection.Normalize();
+	//		Ray hitRay{ camera.origin, rayDirection };
+
+	//		ColorRGB finalColor{};
+	//		HitRecord closestHit{};
+	//		pScene->GetClosestHit(hitRay, closestHit);
+
+	//		if (closestHit.didHit)
+	//		{ 
+
+	//			for (const Light& light : lights)
+	//			{
+	//				const Vector3 lightRayIntersectPoint{ closestHit.origin + 0.00001f * closestHit.normal };
+	//				Vector3 lightRayDir{ LightUtils::GetDirectionToLight(light,lightRayIntersectPoint) };
+	//				const float lightRayDist{ lightRayDir.Normalize() };
+
+	//				const Ray lightRay{ lightRayIntersectPoint, lightRayDir, 0.001f, lightRayDist };
+
+	//				const float lightDirCos{ Vector3::Dot(closestHit.normal,lightRayDir) };
+
+	//				if (!pScene->DoesHit(lightRay) || !m_ShadowsEnabled )
+	//				{
+	//					switch (m_CurrentLightMode)
+	//					{
+	//					case LightingMode::Combined:
+	//						if (lightDirCos >= 0)
+	//						finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
+	//							* materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+	//						break;
+	//					case LightingMode::ObservedArea:
+	//						if (lightDirCos >= 0)
+	//						finalColor += lightDirCos * ColorRGB{1, 1, 1};
+	//						break;
+	//					case LightingMode::Radiance:
+	//						finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint);
+	//						break;
+	//					case LightingMode::BRDF:
+	//						if (lightDirCos >= 0)
+	//						finalColor += materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+	//						break;
+	//					}
+	//				}
+
+	//			}
+	//			//Update Color in Buffer
+	//			finalColor.MaxToOne();
+	//		}
+	//		m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
+	//			static_cast<uint8_t>(finalColor.r * 255),
+	//			static_cast<uint8_t>(finalColor.g * 255),
+	//			static_cast<uint8_t>(finalColor.b * 255));
+	//	}
+	//}
+	////@END
+	////Update SDL Surface
+	//SDL_UpdateWindowSurface(m_pWindow);
 }
+#pragma endregion
 
 bool Renderer::SaveBufferToImage() const
 {
 	return SDL_SaveBMP(m_pBuffer, "RayTracing_Buffer.bmp");
+}
+
+void Renderer::ToggleShadow()
+{
+	m_ShadowsEnabled = !m_ShadowsEnabled;
+}
+
+void Renderer::ToggleLightMode()
+{
+	m_CurrentLightMode = LightingMode((int(m_CurrentLightMode) + 1) % 4);
 }

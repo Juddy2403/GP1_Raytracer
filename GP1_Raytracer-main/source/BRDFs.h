@@ -57,7 +57,7 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			const float dot{ std::min(.999f,std::max(0.f,Vector3::Dot(h,v))) };
+			const float dot{ std::min(1.f,std::max(0.f,Vector3::Dot(h,v))) };
 			return { f0 + (ColorRGB{1,1,1} - f0) * powf((1 - dot),5)};
 		}
 
