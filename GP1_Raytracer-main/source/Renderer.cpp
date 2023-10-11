@@ -121,8 +121,8 @@ void Renderer::Render(Scene* pScene) const
 
 					if (lightDirCos >= 0 && !pScene->DoesHit(lightRay))
 					{
-						finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos;
-							//* materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
+						finalColor += LightUtils::GetRadiance(light, lightRayIntersectPoint) * lightDirCos
+							* materials[closestHit.materialIndex]->Shade(closestHit, lightRayDir, -rayDirection);
 					}
 				}
 				//Update Color in Buffer

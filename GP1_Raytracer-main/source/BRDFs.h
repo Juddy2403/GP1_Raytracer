@@ -15,14 +15,14 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return { cd * kd / M_PI };
+			return { cd * kd / float(M_PI) };
 		}
 
 		static ColorRGB Lambert(const ColorRGB& kd, const ColorRGB& cd)
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			return { cd * kd / M_PI };
+			return { cd * kd / float(M_PI) };
 		}
 
 		/**
@@ -39,8 +39,8 @@ namespace dae
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
 			if (exp == 0) return ks * colors::White;
-			const Vector3 reflect{ Vector3::Reflect(l,n)};
-			const float cos{ std::max(Vector3::Dot(reflect,v),0.f) };
+			const Vector3 reflect{ Vector3::Reflect(l,n) };
+			const float cos{ std::min(1.f, std::max(Vector3::Dot(reflect,v),0.f)) };
 			if (exp == 1) return ks * cos * colors::White;
 			if (exp == 2) return ks * cos * cos * colors::White;
 			return { ks * powf(cos,exp) * colors::White };
@@ -57,7 +57,7 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			const float dot{ std::max(0.f,Vector3::Dot(h,v)) };
+			const float dot{ std::min(1.f,std::max(0.f,Vector3::Dot(h,v))) };
 			return { f0 + (colors::White - f0) * powf((1 - dot),5) };
 		}
 
@@ -72,10 +72,10 @@ namespace dae
 		{
 			//todo: W3
 			//assert(false && "Not Implemented Yet");
-			const float nhDot{ std::max(Vector3::Dot(n,h),0.f) };
+			const float nhDot{ std::min(1.f,std::max(Vector3::Dot(n,h),0.f)) };
 			const float aSrqr{ roughness * roughness * roughness * roughness };
 			const float denominator{ (nhDot * nhDot) * (aSrqr - 1) + 1 };
-			return {aSrqr/(float(M_PI)*denominator*denominator)};
+			return { aSrqr / (float(M_PI) * denominator * denominator) };
 		}
 
 
@@ -89,7 +89,7 @@ namespace dae
 		static float GeometryFunction_SchlickGGX(const Vector3& n, const Vector3& v, float roughness)
 		{
 			//todo: W3
-			const float dot{ std::max(Vector3::Dot(n,v),0.f) };
+			const float dot{ std::min(1.f, std::max(Vector3::Dot(n,v),0.f)) };
 			const float a{ Square(roughness) };
 			const float k{ (a + 1) * (a + 1) / 8 };
 			return { dot / (dot * (1 - k) + k) };

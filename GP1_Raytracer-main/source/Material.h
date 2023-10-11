@@ -119,8 +119,8 @@ namespace dae
 			const float normDistribution{ BRDF::NormalDistribution_GGX(hitRecord.normal,h,m_Roughness) };
 			const float geometry{ BRDF::GeometryFunction_Smith(hitRecord.normal,v,l,m_Roughness) };
 
-			const float vnDot{ std::max(0.f, Vector3::Dot(v,hitRecord.normal)) };
-			const float lnDot{ std::max(0.f, Vector3::Dot(l,hitRecord.normal)) };
+			const float vnDot{ std::min(1.f,std::max(0.f, Vector3::Dot(v,hitRecord.normal))) };
+			const float lnDot{ std::min(1.f,std::max(0.f, Vector3::Dot(l,hitRecord.normal))) };
 			ColorRGB specular{ fresnel * ((normDistribution * geometry) / (4.f * vnDot * lnDot)) };
 			specular.MaxToOne();
 			const ColorRGB kd{ (m_Metalness == 1.f) ? colors::Black : colors::White - fresnel };
