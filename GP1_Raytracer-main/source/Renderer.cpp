@@ -41,7 +41,7 @@ void Renderer::Render(Scene* pScene) const
 	auto& lights = pScene->GetLights();
 	const float aspectRatio{ float(m_Width) / (m_Height) };
 	Matrix cameraToWorld{ camera.CalculateCameraToWorld() };
-	camera.UpdateFOV(45.f);
+	//camera.UpdateFOV(45.f);
 
 	std::for_each(std::execution::par, m_ImageVerticalIterator.begin(), m_ImageVerticalIterator.end(), [&](uint32_t py)
 		//[this, aspectRatio, camera, materials, lights, cameraToWorld, pScene]

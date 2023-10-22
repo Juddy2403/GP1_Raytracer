@@ -67,7 +67,7 @@ namespace dae
 
 			//todo: W2
 			//assert(false && "Not Implemented Yet");
-			const float movementSpeed{ 20.f }, rotationSpeed{ 40.f };
+			const float movementSpeed{ 20.f }, rotationSpeed{ 80.f };
 
 			if (pKeyboardState[SDL_SCANCODE_W]) origin += (movementSpeed * deltaTime) * forward.Normalized();
 			if (pKeyboardState[SDL_SCANCODE_S]) origin -= (movementSpeed * deltaTime) * forward.Normalized();

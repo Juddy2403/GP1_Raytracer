@@ -123,7 +123,7 @@ namespace dae
 			const float lnDot{ std::min(1.f,std::max(0.f, Vector3::Dot(l,hitRecord.normal))) };
 			ColorRGB specular{ fresnel * ((normDistribution * geometry) / (4.f * vnDot * lnDot)) };
 			specular.MaxToOne();
-			const ColorRGB kd{ (m_Metalness == 1.f) ? ColorRGB{0,0,0} : ColorRGB{1,1,1} - fresnel};
+			const ColorRGB kd{ (m_Metalness == 1.f) ? ColorRGB{0,0,0} : ColorRGB{1,1,1} - specular};
 			const ColorRGB diffuse{ BRDF::Lambert(kd,m_Albedo) };
 
 			return { specular+diffuse };
