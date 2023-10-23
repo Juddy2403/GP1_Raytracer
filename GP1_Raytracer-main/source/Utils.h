@@ -84,16 +84,17 @@ namespace dae
 			const Vector3 a{ triangle.v1 - triangle.v0 };
 			const Vector3 b{ triangle.v2 - triangle.v0 };
 			const Vector3 n{ Vector3::Cross(a,b) };
-			if (Vector3::Dot(n, ray.direction) == 0) return false;
+			const float nRayDot{ Vector3::Dot(n, ray.direction) };
+			if (nRayDot == 0) return false;
 			if (!ignoreHitRecord)
 			{
-				if (triangle.cullMode == TriangleCullMode::FrontFaceCulling && Vector3::Dot(n, ray.direction) < 0) return false;
-				if (triangle.cullMode == TriangleCullMode::BackFaceCulling && Vector3::Dot(n, ray.direction) > 0) return false;
+				if (triangle.cullMode == TriangleCullMode::FrontFaceCulling && nRayDot < 0) return false;
+				if (triangle.cullMode == TriangleCullMode::BackFaceCulling && nRayDot > 0) return false;
 			}
 			else
 			{
-				if (triangle.cullMode == TriangleCullMode::FrontFaceCulling && Vector3::Dot(n, ray.direction) > 0) return false;
-				if (triangle.cullMode == TriangleCullMode::BackFaceCulling && Vector3::Dot(n, ray.direction) < 0) return false;
+				if (triangle.cullMode == TriangleCullMode::FrontFaceCulling && nRayDot > 0) return false;
+				if (triangle.cullMode == TriangleCullMode::BackFaceCulling && nRayDot < 0) return false;
 			}
 			const Vector3 L{ triangle.v0 - ray.origin };
 			const float t{ Vector3::Dot(L,n) / Vector3::Dot(ray.direction,n) };
@@ -132,27 +133,31 @@ namespace dae
 		{
 			//todo W5
 			//assert(false && "No Implemented Yet!");
-			HitRecord closestHitRec{};
-			for (size_t i = 0; i < mesh.indices.size(); i += 3)
+			Triangle triangle {};
+			Vector3 vertA, vertB, vertC;
+			HitRecord tempHit{};
+			for (int i = 0; i < mesh.transformedNormals.size(); ++i)
 			{
-				Triangle triangle{ mesh.transformedPositions[i],mesh.transformedPositions[i + 1],
-						mesh.transformedPositions[i + 2],mesh.transformedNormals[i] };
+				vertA = mesh.transformedPositions[mesh.indices[i * 3]];
+				vertB = mesh.transformedPositions[mesh.indices[i * 3 + 1]];
+				vertC = mesh.transformedPositions[mesh.indices[i * 3 + 2]];
+				triangle = Triangle{ vertA,vertB,vertC };
+				triangle.normal = mesh.transformedNormals[i];
 				triangle.cullMode = mesh.cullMode;
-				triangle.materialIndex = mesh.materialIndex;
-
 				if (!ignoreHitRecord)
 				{
-					HitTest_Triangle(triangle, ray, hitRecord);
-					if (hitRecord.didHit == true && closestHitRec.t > hitRecord.t) closestHitRec = hitRecord;
+					if (HitTest_Triangle(triangle, ray, tempHit) && tempHit.t < hitRecord.t) hitRecord = tempHit;
 				}
 				else
 				{
-					if (HitTest_Triangle(triangle, ray))
-						return true;
+					if (HitTest_Triangle(triangle, ray)) return true;
 				}
 			}
-			hitRecord = closestHitRec;
-			if (hitRecord.didHit == true) return true;
+			if (hitRecord.didHit) 
+			{
+				hitRecord.materialIndex = mesh.materialIndex;
+				return true;
+			}
 			return false;
 		}
 

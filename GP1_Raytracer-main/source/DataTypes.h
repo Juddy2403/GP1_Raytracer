@@ -106,9 +106,9 @@ namespace dae
 		{
 			int startIndex = static_cast<int>(positions.size());
 
-			positions.push_back(triangle.v0);
-			positions.push_back(triangle.v1);
-			positions.push_back(triangle.v2);
+			positions.emplace_back(triangle.v0);
+			positions.emplace_back(triangle.v1);
+			positions.emplace_back(triangle.v2);
 
 			indices.push_back(startIndex);
 			indices.push_back(++startIndex);
@@ -124,11 +124,19 @@ namespace dae
 		void CalculateNormals()
 		{
 			//assert(false && "No Implemented Yet!");
-			for (size_t i = 0; i < indices.size(); i+=3)
+			const int trianglesAmount{ static_cast<int>(indices.size() / 3) };
+			Vector3 edgeA{};
+			Vector3 edgeB{};
+			Vector3 vertA, vertB, vertC;
+			normals.reserve(trianglesAmount);
+			for (int i = 0; i < trianglesAmount; ++i)
 			{
-				const Vector3 edgeV0V1 = positions[i + 1] - positions[i]; //v1 - v0;
-				const Vector3 edgeV0V2 = positions[i + 2] - positions[i];//v2 - v0;
-				normals.push_back(Vector3::Cross(edgeV0V1, edgeV0V2).Normalized());
+				vertA = positions[indices[i * 3]];
+				vertB = positions[indices[i * 3 + 1]];
+				vertC = positions[indices[i * 3 + 2]];
+				edgeA = vertB - vertA;
+				edgeB = vertC - vertA;
+				normals.emplace_back(Vector3::Cross(edgeA, edgeB).Normalized());
 			}
 		}
 
@@ -136,20 +144,22 @@ namespace dae
 		{
 			//assert(false && "No Implemented Yet!");
 			//Calculate Final Transform 
-			const auto finalTransform = translationTransform * rotationTransform * scaleTransform;
+			const auto finalTransform = rotationTransform * translationTransform * scaleTransform;
 
 			//Transform Positions (positions > transformedPositions)
 			transformedPositions.clear();
+			transformedPositions.reserve(positions.size());
 			for (const Vector3& pos : positions)
 			{
-				transformedPositions.push_back(finalTransform.TransformPoint(pos));
+				transformedPositions.emplace_back(finalTransform.TransformPoint(pos));
 			}
 			//Transform Normals (normals > transformedNormals)
 			//...
 			transformedNormals.clear();
+			transformedNormals.reserve(normals.size());
 			for (const Vector3& norm : normals)
 			{
-				transformedNormals.push_back(finalTransform.TransformVector(norm));
+				transformedNormals.emplace_back(finalTransform.TransformVector(norm));
 			}
 		}
 	};
