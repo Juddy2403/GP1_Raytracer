@@ -253,7 +253,7 @@ namespace dae {
 #pragma region SCENE W4 Reference
 	void dae::Scene_W4_Reference::Initialize()
 	{
-		sceneName = "Reference Scene";
+		sceneName = "RayTracer - **Raileanu Ioana (2DAE10)**";
 		m_Camera.origin = { 0,3,-9 };
 		m_Camera.UpdateFOV(45.f);
 
@@ -319,7 +319,7 @@ namespace dae {
 #pragma region SCENE W4 Bunny
 	void dae::Scene_W4_Bunny::Initialize()
 	{
-		sceneName = "Week 4";
+		sceneName = "RayTracer - **Raileanu Ioana (2DAE10)**";
 		m_Camera.origin = { 0.f,3.f,-9.f };
 		m_Camera.UpdateFOV(45.f);
 		//Materials

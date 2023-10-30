@@ -33,7 +33,7 @@ int main(int argc, char* args[])
 	const uint32_t height = 480;
 
 	SDL_Window* pWindow = SDL_CreateWindow(
-		"RayTracer - **Insert Name**",
+		"RayTracer - **Raileanu Ioana (2DAE10)**",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		width, height, 0);
@@ -75,6 +75,8 @@ int main(int argc, char* args[])
 					Renderer::ToggleShadow();
 				if (e.key.keysym.scancode == SDL_SCANCODE_F3)
 					Renderer::ToggleLightMode();
+				if (e.key.keysym.scancode == SDL_SCANCODE_F6)
+					pTimer->StartBenchmark();
 				break;
 			}
 		}
