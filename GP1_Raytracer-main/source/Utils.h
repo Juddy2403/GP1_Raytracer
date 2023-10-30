@@ -19,12 +19,10 @@ namespace dae
 
 			const float tCa{ Vector3::Dot(rayToSphere, ray.direction) };
 
-			const float squaredRadius{ sphere.radius * sphere.radius };
-
 			const float od{ (rayToSphere.SqrMagnitude() - tCa * tCa)};
-			if (od >= squaredRadius) return false;
-			//TODO: calculte sphere squared in sphere class
-			const float tHc{ sqrt(squaredRadius - od) };
+			if (od >= sphere.radiusSqrt) return false;
+
+			const float tHc{ sqrt(sphere.radiusSqrt - od) };
 
 			const float tZero{ (tCa - tHc > ray.min) ? tCa - tHc : tCa + tHc };
 
@@ -181,10 +179,37 @@ namespace dae
 		}
 #pragma endregion
 #pragma region TriangeMesh HitTest
+		inline bool AABB_TriangleMesh(const TriangleMesh& mesh, const Ray& ray)
+		{
+			// X
+			float tx1 = (mesh.transformedMinAABB.x - ray.origin.x) / ray.direction.x;
+			float tx2 = (mesh.transformedMaxAABB.x - ray.origin.x) / ray.direction.x;
+
+			float tmin = std::min(tx1, tx2);
+			float tmax = std::max(tx1, tx2);
+
+			// Y
+			float ty1 = (mesh.transformedMinAABB.y - ray.origin.y) / ray.direction.y;
+			float ty2 = (mesh.transformedMaxAABB.y - ray.origin.y) / ray.direction.y;
+
+			tmin = std::max(tmin, std::min(ty1, ty2));
+			tmax = std::min(tmax, std::max(ty1, ty2));
+
+			// Z
+			float tz1 = (mesh.transformedMinAABB.z - ray.origin.z) / ray.direction.z;
+			float tz2 = (mesh.transformedMaxAABB.z - ray.origin.z) / ray.direction.z;
+
+			tmin = std::max(tmin, std::min(tz1, tz2));
+			tmax = std::min(tmax, std::max(tz1, tz2));
+
+			return tmax > 0 && tmax >= tmin;
+		}
 		inline bool HitTest_TriangleMesh(const TriangleMesh& mesh, const Ray& ray, HitRecord& hitRecord, bool ignoreHitRecord = false)
 		{
 			//todo W5
 			//assert(false && "No Implemented Yet!");
+			if (!AABB_TriangleMesh(mesh, ray)) return false;
+
 			Triangle triangle {};
 			Vector3 vertA, vertB, vertC;
 			HitRecord tempHit{};

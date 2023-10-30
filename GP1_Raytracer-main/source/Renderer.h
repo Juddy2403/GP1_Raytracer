@@ -22,6 +22,9 @@ namespace dae
 		Renderer& operator=(Renderer&&) noexcept = delete;
 
 		void Render(Scene* pScene) const;
+
+		void RenderPixel(Scene* pScene, uint32_t pixelIndex, float fov, const Matrix cameraToWorld, const Vector3 cameraOrigin) const;
+
 		bool SaveBufferToImage() const;
 
 		static void ToggleShadow();
@@ -44,7 +47,10 @@ namespace dae
 		SDL_Surface* m_pBuffer{};
 		uint32_t* m_pBufferPixels{};
 		std::vector<uint32_t> m_ImageHorizontalIterator, m_ImageVerticalIterator;
+		//std::vector<uint32_t> m_PixelIndexes;
 		int m_Width{};
 		int m_Height{};
+		float m_AspectRatio{};
+		int m_AmountOfPixels{};
 	};
 }
