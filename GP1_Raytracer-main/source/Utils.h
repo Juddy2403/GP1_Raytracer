@@ -4,9 +4,6 @@
 #include "Math.h"
 #include "DataTypes.h"
 
-#define EPSILON 0.000001
-//#define MOLLER_TRUMBORE
-
 namespace dae
 {
 	namespace GeometryUtils
@@ -82,46 +79,11 @@ namespace dae
 		//TRIANGLE HIT-TESTS
 		inline bool HitTest_Triangle(const Triangle& triangle, const Ray& ray, HitRecord& hitRecord, bool ignoreHitRecord = false)
 		{
-#ifdef MOLLER_TRUMBORE 
-			const Vector3 edge1{ triangle.v1 - triangle.v0 };
-			const Vector3 edge2{ triangle.v2 - triangle.v0 };
-			const Vector3 h{ Vector3::Cross(ray.direction,edge2) };
-			const float a{ Vector3::Dot(edge1,h) };
-
-			if (a > -EPSILON && a < EPSILON) return false;
-
-			const float f{ 1.f / a };
-			const Vector3 s{ ray.direction - triangle.v0 };
-			const float u{ f * Vector3::Dot(s,h) };
-
-			if (u < 0.f || u >1.f) return false;
-
-			const Vector3 q = { Vector3::Cross(s,edge1) };
-			const float v{ f * Vector3::Dot(ray.direction,q) }; 
-
-			if (v < 0.f || u + v > 1.f)
-				return false;
-
-			// At this stage we can compute t to find out where the intersection point is on the line.
-			const float t{ f * Vector3::Dot(edge2,q) };
-
-			if (t < EPSILON) return false;
-
-			if (!ignoreHitRecord)
-			{
-				hitRecord.didHit = true;
-				hitRecord.materialIndex = triangle.materialIndex;
-				hitRecord.t = t;
-				hitRecord.origin = ray.origin + ray.direction*t;
-				hitRecord.normal = triangle.normal;
-			}
-
-			return true;
-			
-#else
-			const Vector3 edge1{ triangle.v1 - triangle.v0 };
-			const Vector3 edge2{ triangle.v2 - triangle.v0 };
-			const Vector3 n{ Vector3::Cross(edge1,edge2) };
+			//todo W5
+			//assert(false && "No Implemented Yet!");
+			const Vector3 a{ triangle.v1 - triangle.v0 };
+			const Vector3 b{ triangle.v2 - triangle.v0 };
+			const Vector3 n{ Vector3::Cross(a,b) };
 			const float nRayDot{ Vector3::Dot(n, ray.direction) };
 			if (nRayDot == 0) return false;
 			if (!ignoreHitRecord)
@@ -158,7 +120,6 @@ namespace dae
 			}
 
 			return true;
-#endif
 		}
 
 		inline bool HitTest_Triangle(const Triangle& triangle, const Ray& ray)
