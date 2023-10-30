@@ -113,23 +113,42 @@ namespace dae
 	};
 
 	//+++++++++++++++++++++++++++++++++++++++++
-	//WEEK 4 Test Scene
-	class Scene_W4 final : public Scene
+	//WEEK 4 Reference Scene
+	class Scene_W4_Reference final : public Scene
 	{
 	public:
-		Scene_W4() = default;
-		~Scene_W4() override = default;
+		Scene_W4_Reference() = default;
+		~Scene_W4_Reference() override = default;
 
-		Scene_W4(const Scene_W4&) = delete;
-		Scene_W4(Scene_W4&&) noexcept = delete;
-		Scene_W4& operator=(const Scene_W4&) = delete;
-		Scene_W4& operator=(Scene_W4&&) noexcept = delete;
+		Scene_W4_Reference(const Scene_W4_Reference&) = delete;
+		Scene_W4_Reference(Scene_W4_Reference&&) noexcept = delete;
+		Scene_W4_Reference& operator=(const Scene_W4_Reference&) = delete;
+		Scene_W4_Reference& operator=(Scene_W4_Reference&&) noexcept = delete;
+
+		void Initialize() override;
+		virtual void Update(dae::Timer* pTimer) override;
+
+	private:
+		TriangleMesh* m_Meshes[3]{};
+	};
+
+	//+++++++++++++++++++++++++++++++++++++++++
+	//WEEK 4 Bunny Scene
+	class Scene_W4_Bunny final : public Scene
+	{
+	public:
+		Scene_W4_Bunny() = default;
+		~Scene_W4_Bunny() override = default;
+
+		Scene_W4_Bunny(const Scene_W4_Bunny&) = delete;
+		Scene_W4_Bunny(Scene_W4_Bunny&&) noexcept = delete;
+		Scene_W4_Bunny& operator=(const Scene_W4_Bunny&) = delete;
+		Scene_W4_Bunny& operator=(Scene_W4_Bunny&&) noexcept = delete;
 
 		void Initialize() override;
 		virtual void Update(dae::Timer* pTimer) override;
 
 	private:
 		TriangleMesh* pMesh{ nullptr };
-		TriangleMesh* m_Meshes[3]{};
 	};
 }

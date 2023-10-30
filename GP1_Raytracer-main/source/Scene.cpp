@@ -250,8 +250,8 @@ namespace dae {
 	}
 #pragma endregion
 
-#pragma region SCENE W4
-	void dae::Scene_W4::Initialize()
+#pragma region SCENE W4 Reference
+	void dae::Scene_W4_Reference::Initialize()
 	{
 		
 	//	sceneName = "Week 4";
@@ -346,7 +346,7 @@ namespace dae {
 
 	}
 
-	void dae::Scene_W4::Update(dae::Timer* pTimer)
+	void dae::Scene_W4_Reference::Update(dae::Timer* pTimer)
 	{
 		Scene::Update(pTimer);
 
@@ -359,6 +359,71 @@ namespace dae {
 			m->RotateY(yawAngle);
 			m->UpdateTransforms();
 		}
+	}
+#pragma endregion
+
+#pragma region SCENE W4 Bunny
+	void dae::Scene_W4_Bunny::Initialize()
+	{
+			sceneName = "Week 4";
+			m_Camera.origin = { 0.f,1.f,-5.f };
+			m_Camera.UpdateFOV(45.f);
+			//Materials
+			const auto matLambert_GrayBlue = AddMaterial(new Material_Lambert({ .49f, 0.57f, 0.57f }, 1.f));
+			const auto matLambert_White = AddMaterial(new Material_Lambert(colors::White, 1.f));
+			//Planes
+			AddPlane(Vector3{ 0.f, 0.f, 10.f }, Vector3{ 0.f, 0.f, -1.f }, matLambert_GrayBlue); //BACK
+			AddPlane(Vector3{ 0.f, 0.f, 0.f }, Vector3{ 0.f, 1.f, 0.f }, matLambert_GrayBlue); //BOTTOM
+			AddPlane(Vector3{ 0.f, 10.f, 0.f }, Vector3{ 0.f, -1.f, 0.f }, matLambert_GrayBlue); //TOP
+			AddPlane(Vector3{ 5.f, 0.f, 0.f }, Vector3{ -1.f, 0.f, 0.f }, matLambert_GrayBlue); //RIGHT
+			AddPlane(Vector3{ -5.f, 0.f, 0.f }, Vector3{ 1.f, 0.f, 0.f }, matLambert_GrayBlue); //LEFT
+			////Triangle (Temp)
+			////===============
+		/*	auto triangle = Triangle{ {-.75f,.5f,.0f},{-.75f,2.f, .0f}, {.75f,.5f,0.f} };
+			triangle.cullMode = TriangleCullMode::NoCulling;
+			triangle.materialIndex = matLambert_White;
+			m_Triangles.emplace_back(triangle);*/
+			//Triangle Mesh
+			//=============
+			//pMesh = AddTriangleMesh(TriangleCullMode::NoCulling, matLambert_White);
+			//pMesh->positions = {
+			//	{-.75f,-1.f,.0f},  //V0
+			//	{-.75f,1.f, .0f},  //V2
+			//	{.75f,1.f,1.f},    //V3
+			//	{.75f,-1.f,0.f} }; //V4
+			//pMesh->indices = {
+			//	0,1,2, //Triangle 1
+			//	0,2,3  //Triangle 2
+			//};
+			//pMesh->CalculateNormals();
+			//pMesh->Translate({ 0.f,1.5f,0.f });
+			//pMesh->UpdateTransforms();
+			////OBJ
+			////===
+			pMesh = AddTriangleMesh(TriangleCullMode::BackFaceCulling, matLambert_White);
+			//Utils::ParseOBJ("Resources/simple_cube.obj",
+			Utils::ParseOBJ("Resources/lowpoly_bunny.obj",
+				pMesh->positions, 
+				//pMesh->normals, 
+				pMesh->indices);
+			//pMesh->Scale({ 2.f,2.f,2.f });
+			//pMesh->Translate({ .0f,1.f,0.f });
+			//No need to Calculate the normals, these are calculated inside the ParseOBJ function
+			pMesh->UpdateTransforms();
+			//Light
+			AddPointLight(Vector3{ 0.f, 5.f, 5.f }, 50.f, ColorRGB{ 1.f, .61f, .45f }); //Backlight
+			AddPointLight(Vector3{ -2.5f, 5.f, -5.f }, 70.f, ColorRGB{ 1.f, .8f, .45f }); //Front Light Left
+			AddPointLight(Vector3{ 2.5f, 2.5f, -5.f }, 50.f, ColorRGB{ .34f, .47f, .68f });
+
+	}
+
+	void dae::Scene_W4_Bunny::Update(dae::Timer* pTimer)
+	{
+		Scene::Update(pTimer);
+
+		pMesh->RotateY(PI_DIV_2 * pTimer->GetTotal());
+		pMesh->UpdateTransforms();
+
 	}
 #pragma endregion
 

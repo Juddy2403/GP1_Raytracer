@@ -95,11 +95,13 @@ namespace dae
 				break;
 			case TriangleCullMode::FrontFaceCulling:
 				if (a > FLT_EPSILON && !ignoreHitRecord) return false;
-				//if (a < FLT_EPSILON && ignoreHitRecord) return false;
+				if (a < FLT_EPSILON && ignoreHitRecord) return false;
 				break;
 			case TriangleCullMode::NoCulling:
 				if (a > -FLT_EPSILON && a < FLT_EPSILON && !ignoreHitRecord) return false;
-				//if (a > FLT_EPSILON && ignoreHitRecord) return false;
+				if (a > FLT_EPSILON && ignoreHitRecord) return false;
+				break;
+			default:
 				break;
 			}
 			
@@ -116,7 +118,7 @@ namespace dae
 				return false;
 			const float t = f * Vector3::Dot(edge2, q);
 			
-			if (t < FLT_EPSILON && !ignoreHitRecord) return false;
+			if (t < ray.min || t > ray.max) return false;
 
 			if (!ignoreHitRecord)
 			{
@@ -124,7 +126,7 @@ namespace dae
 				hitRecord.materialIndex = triangle.materialIndex;
 				hitRecord.t = t;
 				hitRecord.origin = ray.origin + ray.direction*t;
-				hitRecord.normal = triangle.normal;
+				hitRecord.normal = Vector3::Cross(edge1, edge2).Normalized();
 			}
 
 			return true;
@@ -165,7 +167,7 @@ namespace dae
 				hitRecord.materialIndex = triangle.materialIndex;
 				hitRecord.t = t;
 				hitRecord.origin = P;
-				hitRecord.normal = triangle.normal;
+				hitRecord.normal = Vector3::Cross(edge1, edge2).Normalized();
 			}
 
 			return true;
@@ -186,13 +188,14 @@ namespace dae
 			Triangle triangle {};
 			Vector3 vertA, vertB, vertC;
 			HitRecord tempHit{};
-			for (int i = 0; i < mesh.transformedNormals.size(); ++i)
+			
+			for (int i = 0; i < mesh.indices.size(); i+=3)
 			{
-				vertA = mesh.transformedPositions[mesh.indices[i * 3]];
-				vertB = mesh.transformedPositions[mesh.indices[i * 3 + 1]];
-				vertC = mesh.transformedPositions[mesh.indices[i * 3 + 2]];
+				vertA = mesh.transformedPositions[mesh.indices[i ]];
+				vertB = mesh.transformedPositions[mesh.indices[i + 1]];
+				vertC = mesh.transformedPositions[mesh.indices[i + 2]];
 				triangle = Triangle{ vertA,vertB,vertC };
-				triangle.normal = mesh.transformedNormals[i];
+				//triangle.normal = mesh.transformedNormals[i];
 				triangle.cullMode = mesh.cullMode;
 				if (!ignoreHitRecord)
 				{
@@ -255,7 +258,7 @@ namespace dae
 		//Just parses vertices and indices
 #pragma warning(push)
 #pragma warning(disable : 4505) //Warning unreferenced local function
-		static bool ParseOBJ(const std::string& filename, std::vector<Vector3>& positions, std::vector<Vector3>& normals, std::vector<int>& indices)
+		static bool ParseOBJ(const std::string& filename, std::vector<Vector3>& positions,/* std::vector<Vector3>& normals,*/ std::vector<int>& indices)
 		{
 			std::ifstream file(filename);
 			if (!file)
@@ -296,7 +299,7 @@ namespace dae
 			}
 
 			//Precompute normals
-			for (uint64_t index = 0; index < indices.size(); index += 3)
+			/*for (uint64_t index = 0; index < indices.size(); index += 3)
 			{
 				uint32_t i0 = indices[index];
 				uint32_t i1 = indices[index + 1];
@@ -318,7 +321,7 @@ namespace dae
 				}
 
 				normals.push_back(normal);
-			}
+			}*/
 
 			return true;
 		}

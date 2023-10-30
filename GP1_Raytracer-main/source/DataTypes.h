@@ -41,7 +41,7 @@ namespace dae
 		{
 			const Vector3 edgeV0V1 = v1 - v0;
 			const Vector3 edgeV0V2 = v2 - v0;
-			normal = Vector3::Cross(edgeV0V1, edgeV0V2).Normalized();
+			//normal = Vector3::Cross(edgeV0V1, edgeV0V2).Normalized();
 		}
 
 		Vector3 v0{};
@@ -61,20 +61,20 @@ namespace dae
 		positions(_positions), indices(_indices), cullMode(_cullMode)
 		{
 			//Calculate Normals
-			CalculateNormals();
+			//CalculateNormals();
 
 			//Update Transforms
 			UpdateTransforms();
 		}
 
-		TriangleMesh(const std::vector<Vector3>& _positions, const std::vector<int>& _indices, const std::vector<Vector3>& _normals, TriangleCullMode _cullMode) :
+		/*TriangleMesh(const std::vector<Vector3>& _positions, const std::vector<int>& _indices, const std::vector<Vector3>& _normals, TriangleCullMode _cullMode) :
 			positions(_positions), indices(_indices), normals(_normals), cullMode(_cullMode)
 		{
 			UpdateTransforms();
-		}
+		}*/
 
 		std::vector<Vector3> positions{};
-		std::vector<Vector3> normals{};
+		//std::vector<Vector3> normals{};
 		std::vector<int> indices{};
 		unsigned char materialIndex{};
 
@@ -85,7 +85,7 @@ namespace dae
 		Matrix scaleTransform{};
 
 		std::vector<Vector3> transformedPositions{};
-		std::vector<Vector3> transformedNormals{};
+		//std::vector<Vector3> transformedNormals{};
 
 		void Translate(const Vector3& translation)
 		{
@@ -114,31 +114,31 @@ namespace dae
 			indices.push_back(++startIndex);
 			indices.push_back(++startIndex);
 
-			normals.push_back(triangle.normal);
+			//normals.push_back(triangle.normal);
 
 			//Not ideal, but making sure all vertices are updated
 			if(!ignoreTransformUpdate)
 				UpdateTransforms();
 		}
 
-		void CalculateNormals()
-		{
-			//assert(false && "No Implemented Yet!");
-			const int trianglesAmount{ static_cast<int>(indices.size() / 3) };
-			Vector3 edgeA{};
-			Vector3 edgeB{};
-			Vector3 vertA, vertB, vertC;
-			normals.reserve(trianglesAmount);
-			for (int i = 0; i < trianglesAmount; ++i)
-			{
-				vertA = positions[indices[i * 3]];
-				vertB = positions[indices[i * 3 + 1]];
-				vertC = positions[indices[i * 3 + 2]];
-				edgeA = vertB - vertA;
-				edgeB = vertC - vertA;
-				normals.emplace_back(Vector3::Cross(edgeA, edgeB).Normalized());
-			}
-		}
+		//void CalculateNormals()
+		//{
+		//	//assert(false && "No Implemented Yet!");
+		//	const int trianglesAmount{ static_cast<int>(indices.size() / 3) };
+		//	Vector3 edgeA{};
+		//	Vector3 edgeB{};
+		//	Vector3 vertA, vertB, vertC;
+		//	normals.reserve(trianglesAmount);
+		//	for (int i = 0; i < trianglesAmount; ++i)
+		//	{
+		//		vertA = positions[indices[i * 3]];
+		//		vertB = positions[indices[i * 3 + 1]];
+		//		vertC = positions[indices[i * 3 + 2]];
+		//		edgeA = vertB - vertA;
+		//		edgeB = vertC - vertA;
+		//		normals.emplace_back(Vector3::Cross(edgeA, edgeB).Normalized());
+		//	}
+		//}
 
 		void UpdateTransforms()
 		{
@@ -154,13 +154,13 @@ namespace dae
 				transformedPositions.emplace_back(finalTransform.TransformPoint(pos));
 			}
 			//Transform Normals (normals > transformedNormals)
-			//...
-			transformedNormals.clear();
+			
+			/*transformedNormals.clear();
 			transformedNormals.reserve(normals.size());
 			for (const Vector3& norm : normals)
 			{
 				transformedNormals.emplace_back(finalTransform.TransformVector(norm));
-			}
+			}*/
 		}
 	};
 #pragma endregion
