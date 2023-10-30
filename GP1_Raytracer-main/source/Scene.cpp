@@ -348,8 +348,9 @@ namespace dae {
 
 	void dae::Scene_W4::Update(dae::Timer* pTimer)
 	{
-		/*Scene::Update(pTimer);
-		pMesh->RotateY(PI_DIV_2 * pTimer->GetTotal());
+		Scene::Update(pTimer);
+
+		/*pMesh->RotateY(PI_DIV_2 * pTimer->GetTotal());
 		pMesh->UpdateTransforms();*/
 
 		const auto yawAngle = (cos(pTimer->GetTotal()) + 1.f) / 2.f * PI_2;
