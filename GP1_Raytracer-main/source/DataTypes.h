@@ -90,6 +90,10 @@ namespace dae
 		Vector3 transformedMinAABB;
 		Vector3 transformedMaxAABB;
 
+		float m_Pitch{};
+		float m_Yaw{};
+		float m_Roll{};
+
 		std::vector<Vector3> transformedPositions{};
 		//std::vector<Vector3> transformedNormals{};
 
@@ -152,7 +156,25 @@ namespace dae
 
 		void RotateY(float yaw)
 		{
-			rotationTransform = Matrix::CreateRotationY(yaw);
+			m_Yaw = yaw;
+			UpdateRotate();
+		}
+
+		void RotateX(float pitch)
+		{
+			m_Pitch = pitch;
+			UpdateRotate();
+		}
+
+		void RotateZ(float roll)
+		{
+			m_Roll = roll;
+			UpdateRotate();
+		}
+
+		void UpdateRotate()
+		{
+			rotationTransform = Matrix::CreateRotation(m_Pitch, m_Yaw, m_Roll);;
 		}
 
 		void Scale(const Vector3& scale)
@@ -202,7 +224,7 @@ namespace dae
 		{
 			//assert(false && "No Implemented Yet!");
 			//Calculate Final Transform 
-			const auto finalTransform = rotationTransform * translationTransform * scaleTransform;
+			const auto finalTransform = scaleTransform * rotationTransform * translationTransform;
 
 			//Transform Positions (positions > transformedPositions)
 			transformedPositions.clear();

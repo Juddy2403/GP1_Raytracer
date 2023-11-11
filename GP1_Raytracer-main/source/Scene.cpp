@@ -358,5 +358,64 @@ namespace dae {
 	}
 #pragma endregion
 
+#pragma region EXTRA SCENE 
+	void dae::Scene_Extra::Initialize()
+	{
+		sceneName = "RayTracer - **Raileanu Ioana (2DAE10)**";
+		m_Camera.origin = { 0.f,3.f,-9.f };
+		m_Camera.UpdateFOV(45.f);
+		//Materials
+		const auto matLambert_GrayBlue = AddMaterial(new Material_Lambert({ .49f, 0.57f, 0.57f }, 1.f));
+		const auto matLambert_Orange = AddMaterial(new Material_Lambert(ColorRGB{0.7f,0.4f,0.f}, 1.f));
+		//Planes 
+		AddPlane(Vector3{ 0.f, 0.f, 10.f }, Vector3{ 0.f, 0.f, -1.f }, matLambert_GrayBlue); //BACK
+		AddPlane(Vector3{ 0.f, 0.f, 0.f }, Vector3{ 0.f, 1.f, 0.f }, matLambert_GrayBlue); //BOTTOM
+		AddPlane(Vector3{ 0.f, 10.f, 0.f }, Vector3{ 0.f, -1.f, 0.f }, matLambert_GrayBlue); //TOP
+		AddPlane(Vector3{ 5.f, 0.f, 0.f }, Vector3{ -1.f, 0.f, 0.f }, matLambert_GrayBlue); //RIGHT
+		AddPlane(Vector3{ -5.f, 0.f, 0.f }, Vector3{ 1.f, 0.f, 0.f }, matLambert_GrayBlue); //LEFT
+
+		pMesh = AddTriangleMesh(TriangleCullMode::BackFaceCulling, matLambert_Orange);
+		Utils::ParseOBJ("Resources/cat.obj",
+			pMesh->positions,
+			pMesh->indices);
+
+		//pMesh->Scale(Vector3{ 1.3f,1.3f,1.3f });
+		pMesh->Translate(Vector3{ 0,2,0 });
+		pMesh->RotateY(50.f * TO_RADIANS);
+
+		pMesh->UpdateAABB();
+		pMesh->UpdateTransforms();
+
+		//Light
+		AddPointLight(Vector3{ 0.f, 5.f, 5.f }, 50.f, ColorRGB{ 1.f, .61f, .45f }); //Backlight
+		AddPointLight(Vector3{ -2.5f, 5.f, -5.f }, 70.f, ColorRGB{ 1.f, .8f, .45f }); //Front Light Left
+		AddPointLight(Vector3{ 2.5f, 2.5f, -5.f }, 50.f, ColorRGB{ .34f, .47f, .68f });
+
+	}
+
+	void dae::Scene_Extra::Update(dae::Timer* pTimer)
+	{
+		Scene::Update(pTimer);
+		m_AccumTime += pTimer->GetElapsed();
+
+		if (m_AccumTime >= m_ChangeInterval)
+		{
+			m_AccumTime = 0.f;
+			m_IsRotatingY = !m_IsRotatingY;
+			pMesh->RotateZ(0.f);
+		}
+
+		if(m_IsRotatingY) 
+		{
+			m_TotalYTime += pTimer->GetElapsed();
+			pMesh->RotateY(PI_DIV_2 * m_TotalYTime);
+		}
+		else pMesh->RotateZ(sinf( PI_DIV_2 * pTimer->GetTotal())*0.8f);
+		
+		pMesh->UpdateTransforms();
+
+	}
+#pragma endregion
+
 }
 

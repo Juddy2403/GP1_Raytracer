@@ -73,12 +73,12 @@ namespace dae
 			if (pKeyboardState[SDL_SCANCODE_S]) origin -= (movementSpeed * deltaTime) * forward.Normalized();
 			if (pKeyboardState[SDL_SCANCODE_A]) origin -= (movementSpeed * deltaTime) * right.Normalized();
 			if (pKeyboardState[SDL_SCANCODE_D]) origin += (movementSpeed * deltaTime) * right.Normalized();
+			
+			if (mouseState == SDL_BUTTON_LEFT && mouseY)	origin -= (movementSpeed * deltaTime) * forward.Normalized() * mouseY;
+			if (mouseState == SDL_BUTTON_X2 && mouseY) origin -= (movementSpeed * deltaTime) * up.Normalized() * mouseY;
+			if (mouseState == SDL_BUTTON_LEFT && mouseX) totalYaw += rotationSpeed * deltaTime * mouseX;
 
-			if (mouseState == 1 && mouseY)	origin -= (movementSpeed * deltaTime) * forward.Normalized() * mouseY;
-			if (mouseState == 5 && mouseY) origin -= (movementSpeed * deltaTime) * up.Normalized() * mouseY;
-			if (mouseState == 1 && mouseX) totalYaw += rotationSpeed * deltaTime * mouseX;
-
-			if (mouseState == 4)
+			if (mouseState == SDL_BUTTON_X1)
 			{
 				if (!(totalPitch > 88.f && mouseY <= 0) && !(totalPitch < -88.f && mouseY >= 0))
 					totalPitch -= rotationSpeed * deltaTime * mouseY;

@@ -151,4 +151,28 @@ namespace dae
 	private:
 		TriangleMesh* pMesh{ nullptr };
 	};
+
+	//+++++++++++++++++++++++++++++++++++++++++
+	//Extra Scene
+	class Scene_Extra final : public Scene
+	{
+	public:
+		Scene_Extra() = default;
+		~Scene_Extra() override = default;
+
+		Scene_Extra(const Scene_Extra&) = delete;
+		Scene_Extra(Scene_Extra&&) noexcept = delete;
+		Scene_Extra& operator=(const Scene_Extra&) = delete;
+		Scene_Extra& operator=(Scene_Extra&&) noexcept = delete;
+
+		void Initialize() override;
+		virtual void Update(dae::Timer* pTimer) override;
+
+	private:
+		TriangleMesh* pMesh{ nullptr };
+		bool m_IsRotatingY{ false };
+		float m_AccumTime{};
+		float m_TotalYTime{};
+		float m_ChangeInterval{ 6.f };
+	};
 }
