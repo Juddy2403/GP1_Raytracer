@@ -1,5 +1,6 @@
 #include "Vector3.h"
 
+#include <algorithm>
 #include <cassert>
 
 #include "Vector4.h"
