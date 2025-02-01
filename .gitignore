@@ -6,6 +6,10 @@ TempFiles/
 # Force include the lib folder
 !lib/
 !lib/**
+# Allow .lib and .dll inside lib/
+!lib/*.lib
+!lib/*.dll
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/rider,visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=rider,visualstudio,c++
