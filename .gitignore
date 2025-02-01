@@ -2,6 +2,11 @@ bin/
 TempFiles/
 .vs/
 .idea/
+
+# Force include the lib folder
+!lib/
+!lib/**
+
 # Created by https://www.toptal.com/developers/gitignore/api/rider,visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=rider,visualstudio,c++
 
